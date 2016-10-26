@@ -28,7 +28,7 @@ import javax.swing.KeyStroke;
 /**
  * @author US 
  * fix and develop by Vinh - legend1250
- * 
+ * https://gitlab.com/vinhnguyen1211/cHw
  */
 public class cHW01_Calculator_T151487 extends JFrame {
 
@@ -465,9 +465,9 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				KeyEvent.ALT_MASK));
 		mniAboutJava.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				KeyEvent.ALT_MASK));
-		setIconJMenu(mniCopy, "./src/imgs/iconcopy.png", 30, 30);
-		setIconJMenu(mniPaste, "./src/imgs/iconpaste.png", 30, 30);
-		setIconJMenu(mniAboutJava, "./src/imgs/javalogo.png", 80, 50);
+		setIconJMenu(mniCopy, "./imgs/iconcopy.png", 30, 30);
+		setIconJMenu(mniPaste, "./imgs/iconpaste.png", 30, 30);
+		setIconJMenu(mniAboutJava, "./imgs/javalogo.png", 80, 50);
 		//Action Listener
 		ActionListener actMni = new ActionListener() {
 			
@@ -499,7 +499,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	
 	private void displayMode(int mode) {
 		if (mode == 1) {
-			setIconJMenu(mniCSta, "./src/imgs/dotblue.jpg", 20, 20);
+			setIconJMenu(mniCSta, "./imgs/dotblue.jpg", 20, 20);
 			mniCSci.setIcon(null);
 			mniCPro.setIcon(null);
 			
@@ -510,7 +510,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		}
 		else if (mode == 2) {
 			mniCSta.setIcon(null);
-			setIconJMenu(mniCSci, "./src/imgs/dotblue.jpg", 20, 20);
+			setIconJMenu(mniCSci, "./imgs/dotblue.jpg", 20, 20);
 			mniCPro.setIcon(null);
 			
 			panStandards.setVisible(false);
@@ -522,7 +522,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		else if (mode == 3) {
 			mniCSta.setIcon(null);
 			mniCSci.setIcon(null);
-			setIconJMenu(mniCPro, "./src/imgs/dotblue.jpg", 20, 20);
+			setIconJMenu(mniCPro, "./imgs/dotblue.jpg", 20, 20);
 			//panStandards.setVisible(false);
 			//panScientific.setVisible(true);
 			JOptionPane.showMessageDialog(null, "Working on...");
