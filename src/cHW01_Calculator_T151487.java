@@ -119,34 +119,40 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JButton btnCal = (JButton) arg0.getSource();
-				if (addCal && !number.isEmpty()) {
-					calcualting();
-					setsCal(btnCal.getText());
-					
-					//Adding formula
-					addingFml(btnCal.getText());
-				} else {
-					if (!txtInput.getText().isEmpty()) {
+				
+				if(!txtInput.getText().isEmpty()){
+					if(!addCal){
 						cResult = Double.parseDouble(txtInput.getText());
-					}
-					setsCal(btnCal.getText());
-					addCal = true;
-					
-					//Adding formula
-					if(!number.isEmpty()){
-						addingFml(btnCal.getText());
+						setsCal(btnCal.getText());
+						addCal = true;
+						
+						//Adding formula
+						setFml(txtInput.getText() + " " +btnCal.getText());
 					}
 					else{
-						String sTmp = getFml();
-						setFml(sTmp.substring(0, sTmp.length()-1));
-						addingFml(btnCal.getText());
+						
+						if(!number.isEmpty()){
+							calcualting();
+							setsCal(btnCal.getText());
+							//set formula
+							setFml(getFml() +" " + number + " "+ btnCal.getText());
+						}
+						else{
+							setsCal(btnCal.getText());
+							//set formula
+							setFml(getFml().substring(0, getFml().length()-1));
+							setFml(getFml() + btnCal.getText());
+						}
+						
+						
 					}
-				} 
+				}
 				
-				firstEq = false;
-				blAppend = false;
 				number = "";
+				firstEq = true;
+				blAppend = false;
 				setFmlTxtArea();
+				
 			}
 		};
 
@@ -161,90 +167,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				sEq = getsCal();
-				if(firstEq){
-					if(!blAppend){
-						if (sEq.equals("+")) {
-							cResult += eqTmp;
-							txtInput.setText(cResult + "");
-						} else if (sEq.equals("-")) {
-							cResult -= eqTmp;
-							txtInput.setText(cResult + "");
-						} else if (sEq.equals("*")) {
-							cResult *= eqTmp;
-							txtInput.setText(cResult + "");
-						} else if (sEq.equals("/")) {
-							cResult /= eqTmp;
-							txtInput.setText(cResult + "");
-						}
-						setCurrentResult(cResult);
-						
-						//Adding formula
-						arrFml[arrFmlCount] = getFml() + sEq + eqTmp + " = " + cResult;
-						System.out.println(arrFml[arrFmlCount]);
-						arrFml[arrFmlCount] = cResult+"";
-						setFml(arrFml[arrFmlCount]);
-					}
-					else{
-						cResult = eqTmp;
-						String sTmpInput = txtInput.getText();
-						if (sEq.equals("+")) {
-							cResult += Double.parseDouble(txtInput.getText());
-							txtInput.setText(cResult + "");
-						} else if (sEq.equals("-")) {
-							cResult -= Double.parseDouble(txtInput.getText());
-							txtInput.setText(cResult + "");
-						} else if (sEq.equals("*")) {
-							cResult *= Double.parseDouble(txtInput.getText());
-							txtInput.setText(cResult + "");
-						} else if (sEq.equals("/")) {
-							cResult /= Double.parseDouble(txtInput.getText());
-							txtInput.setText(cResult + "");
-						}
-						setCurrentResult(cResult);
-						
-						//Adding formula
-						arrFml[arrFmlCount] = eqTmp +  sEq + sTmpInput + " = " + cResult;
-						System.out.println(arrFml[arrFmlCount]);
-						arrFml[arrFmlCount] = cResult+"";
-						setFml(arrFml[arrFmlCount]);
-					}
-				}
-				else{
-					eqTmp = Double.parseDouble(txtInput.getText());
-					if (sEq.equals("+")) {
-						cResult += Double.parseDouble(txtInput.getText());
-						txtInput.setText(cResult + "");
-					} else if (sEq.equals("-")) {
-						cResult -= Double.parseDouble(txtInput.getText());
-						txtInput.setText(cResult + "");
-					} else if (sEq.equals("*")) {
-						cResult *= Double.parseDouble(txtInput.getText());
-						txtInput.setText(cResult + "");
-					} else if (sEq.equals("/")) {
-						cResult /= Double.parseDouble(txtInput.getText());
-						txtInput.setText(cResult + "");
-					}
-					setCurrentResult(cResult);
-					
-					//Adding formula
-					arrFml[arrFmlCount] = getFml() + " = " + cResult;
-					System.out.println(arrFml[arrFmlCount]);
-					arrFml[arrFmlCount] = cResult+"";
-					setFml(arrFml[arrFmlCount]);
-					
-					//
-					firstEq = true;
-				}
-				//System.out.println(blAppend);
-				
-				arrFmlCount+=1;
-				
-				setFmlTxtArea();
-				txtFormula.setText("");
-				addCal = false;
-				blAppend = false;
+				calEqual();
 			}
 		});
 	
@@ -285,38 +208,37 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		
 		//btn "+/-"
 		
-		ActionListener fBtn = new ActionListener() {
+		ActionListener someBtn = new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				JButton btnF = (JButton)e.getSource();
 				if(btnF.equals(btnStandards[1][3])){
 					if(!txtInput.getText().isEmpty()){
-						double x = Double.parseDouble(txtInput.getText())*(-1);
+						double x = Double.parseDouble(txtInput.getText())*(-1); // +/- button
 						setCurrentResult(x);
 						txtInput.setText(getCurrentResult()+"");
 					}
 				}
 				else if (btnF.equals(btnStandards[1][4])){
 					if(!txtInput.getText().isEmpty()){
-						double x = Math.sqrt(Double.parseDouble(txtInput.getText()));
+						double x = Math.sqrt(Double.parseDouble(txtInput.getText())); //sqrt button
 						setCurrentResult(x);
 						txtInput.setText(getCurrentResult()+"");
 					}
 				}
 				else if (btnF.equals(btnStandards[3][4])){
 					if(!txtInput.getText().isEmpty()){
-						double x = 1/Double.parseDouble(txtInput.getText());
+						double x = 1/Double.parseDouble(txtInput.getText()); // 1/x button
 						setCurrentResult(x);
 						txtInput.setText(getCurrentResult()+"");
 					}
 				}
 			}
 		};
-		btnStandards[1][3].addActionListener(fBtn);
-		btnStandards[1][4].addActionListener(fBtn);
-		btnStandards[3][4].addActionListener(fBtn);
+		btnStandards[1][3].addActionListener(someBtn);
+		btnStandards[1][4].addActionListener(someBtn);
+		btnStandards[3][4].addActionListener(someBtn);
 		
 	}
 
@@ -328,8 +250,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	boolean addCal = false;
 	// Equal var
 	double eq = 0;
-	String sEq = "";
-	boolean firstEq = false;
+	boolean firstEq = true;
 	double eqTmp = 0;
 	// btnM var
 	double MS = 0;
@@ -343,8 +264,11 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			txtInput.setText(number);
 			blAppend = true;
 		}
-		addingFml(snum);
-		setFmlTxtArea();
+		
+		if(!addCal && firstEq){
+			addingFml(snum);
+			setFmlTxtArea();
+		}
 		
 	}
 
@@ -367,6 +291,90 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		setCurrentResult(cResult);
 	}
 
+	private void calEqual(){
+		String sOper = getsCal();
+		String s = txtInput.getText();
+		
+		if(firstEq){
+			
+			eqTmp = Double.parseDouble(s);
+			if (sOper.equals("+")) {
+				cResult += Double.parseDouble(txtInput.getText());
+				txtInput.setText(cResult + "");
+			} else if (sOper.equals("-")) {
+				cResult -= Double.parseDouble(txtInput.getText());
+				txtInput.setText(cResult + "");
+			} else if (sOper.equals("*")) {
+				cResult *= Double.parseDouble(txtInput.getText());
+				txtInput.setText(cResult + "");
+			} else if (sOper.equals("/")) {
+				cResult /= Double.parseDouble(txtInput.getText());
+				txtInput.setText(cResult + "");
+			}
+			setCurrentResult(cResult);
+			
+			//Adding formula
+			arrFml[arrFmlCount] = getFml() + " " + s + " = " + cResult;
+			System.out.println(arrFml[arrFmlCount]);
+			
+			//
+			firstEq = false;
+			
+		}
+		else{
+			if(!blAppend){
+				if (sOper.equals("+")) {
+					cResult += eqTmp;
+					txtInput.setText(cResult + "");
+				} else if (sOper.equals("-")) {
+					cResult -= eqTmp;
+					txtInput.setText(cResult + "");
+				} else if (sOper.equals("*")) {
+					cResult *= eqTmp;
+					txtInput.setText(cResult + "");
+				} else if (sOper.equals("/")) {
+					cResult /= eqTmp;
+					txtInput.setText(cResult + "");
+				}
+				setCurrentResult(cResult);
+				
+				//Adding formula
+				arrFml[arrFmlCount] = getFml() + " " + sOper + " " + eqTmp + " = " + cResult;
+				System.out.println(arrFml[arrFmlCount]);
+				
+			}
+			else{
+				cResult = eqTmp;
+				String sTmpInput = txtInput.getText();
+				if (sOper.equals("+")) {
+					cResult += Double.parseDouble(txtInput.getText());
+					txtInput.setText(cResult + "");
+				} else if (sOper.equals("-")) {
+					cResult -= Double.parseDouble(txtInput.getText());
+					txtInput.setText(cResult + "");
+				} else if (sOper.equals("*")) {
+					cResult *= Double.parseDouble(txtInput.getText());
+					txtInput.setText(cResult + "");
+				} else if (sOper.equals("/")) {
+					cResult /= Double.parseDouble(txtInput.getText());
+					txtInput.setText(cResult + "");
+				}
+				setCurrentResult(cResult);
+				
+				//Adding formula
+				arrFml[arrFmlCount] = eqTmp + " " + sOper + " " +sTmpInput + " = " + cResult;
+				System.out.println(arrFml[arrFmlCount]);
+				
+			}
+		}
+		arrFmlCount+=1;
+		setFml(cResult + "");
+		txtFormula.setText("");
+		
+		addCal = false;
+		blAppend = false;
+	}
+	
 	private void setsCal(String s) {
 		this.sCal = s;
 	}
