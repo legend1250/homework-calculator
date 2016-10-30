@@ -1,5 +1,7 @@
 
-import java.awt.Image;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -34,7 +39,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 
 	JTextArea txtFormula = new JTextArea();
 	JTextField txtInput = new JTextField();
-	int y0 = 150; // panel start from this y
+	int y0 = 150; // panel start from this y0
 	int y1 = 10, widthInput = 35, widthFml = 70;
 
 	public cHW01_Calculator_T151487() {
@@ -50,10 +55,8 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		add(txtFormula);
 		add(txtInput);
 		//
-		txtFormula.setBounds(10, y1, this.getWidth() - 30, widthFml);
-		txtFormula.setEditable(false);
-		txtInput.setBounds(10, y1 + widthFml+15, this.getWidth() - 30, widthInput);
-		txtInput.setEditable(false);
+		
+		this.add(panStandards);
 	}
 
 	String[][] sStandard = { 
@@ -66,35 +69,81 @@ public class cHW01_Calculator_T151487 extends JFrame {
 
 	JButton[][] btnStandards = new JButton[6][5];
 	JPanel panStandards = new JPanel();
-	JPanel panScientific = new JPanel();
+	
 	int w = 40, h = 40, d = 10;
-	int x = 0, y = 0;
-
+	int xSta = 0, ySta = 0;
+	
+	//Scientific
+	String [][] sSci = {
+			{ "" , "lnv" , "ln" , "(", ")" },
+			{ "lnt", "sinh", "sin", "x^2" , "n!"},
+			{ "dms", "cosh", "cos", "x^y", "x^1/y"},
+			{ "PI", "tanh", "tan", "x^3", "x^1/3"},
+			{ "F-E", "Exp", "Mod", "log", "10^x"}
+			
+	};
+	JPanel panScientific = new JPanel();
+	JButton[][] btnScientific = new JButton[5][5];
+	int xSci = 0, ySci = 0;
+	JPanel panAngleUnits = new JPanel();
+	ButtonGroup btgAngle = new ButtonGroup();
+	JRadioButton optDegrees = new JRadioButton("Degrees");
+	JRadioButton optRadians = new JRadioButton("Radians");
+	JRadioButton optGrads = new JRadioButton("Grads");
+	
+	//Progammer
+	JPanel panPro = new JPanel();
+	JButton[][] btnPro = new JButton[6][3];
+	int xPro = 0, yPro = 0, yPBin = 60;
+	JPanel pancvNum = new JPanel();
+	ButtonGroup btgconvertNum = new ButtonGroup();
+	JRadioButton optHex = new JRadioButton("Hex");
+	JRadioButton optDec = new JRadioButton("Dec");
+	JRadioButton optOct = new JRadioButton("Oct");
+	JRadioButton optBin = new JRadioButton("Bin");
+	JPanel panWord = new JPanel();
+	ButtonGroup btgWord = new ButtonGroup();
+	JRadioButton optQword = new JRadioButton("Qword");
+	JRadioButton optDword = new JRadioButton("Dword");
+	JRadioButton optWord = new JRadioButton("Word");
+	JRadioButton optByte = new JRadioButton("Byte");
+	String [][] sPro = {
+			{"","Mod","A"},
+			{"(",")","B"},
+			{"RoL","RoR","C"},
+			{"Or","Xor","D"},
+			{"Lsh","Rsh","E"},
+			{"Not","And","F"},
+			
+	};
+	
+	
+	
+	
 	private void initComponent() {
+		this.setLayout(null);
 		// panStandard here
 		panStandards.setLayout(null);
 		Insets isMargin = new Insets(1, 1, 1, 1);
-		y = 0;
+		ySta = 0;
 		for (int i = 0; i < 6; i++) {
-			x = 0;
+			xSta = 0;
 			for (int j = 0; j < 5; j++) {
 				btnStandards[i][j] = new JButton(sStandard[i][j]);
 				panStandards.add(btnStandards[i][j]);
-				btnStandards[i][j].setBounds(x, y, w, h);
+				btnStandards[i][j].setBounds(xSta, ySta, w, h);
 				btnStandards[i][j].setMargin(isMargin);
-				x = x + w + d;
+				xSta = xSta + w + d;
 			}
-			y = y + h + d;
+			ySta = ySta + h + d;
 		}
 		btnStandards[4][4].setSize(w, h + d + h);
 		btnStandards[5][0].setSize(w + d + w, h);
-		btnStandards[5][1].setLocation((w + d) * 2, y - h - d);
-		btnStandards[5][2].setLocation((w + d) * 3, y - h - d);
+		btnStandards[5][1].setLocation((w + d) * 2, ySta - h - d);
+		btnStandards[5][2].setLocation((w + d) * 3, ySta - h - d);
 		btnStandards[5][3].setVisible(false);
 		btnStandards[5][4].setVisible(false);
 
-		this.add(panStandards);
-		
 
 		// Actionlistener
 		ActionListener num = new ActionListener() {
@@ -240,6 +289,71 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		btnStandards[1][4].addActionListener(someBtn);
 		btnStandards[3][4].addActionListener(someBtn);
 		
+		
+		//Scientific Panel here
+		panScientific.setLayout(null);
+		ySci = 0;
+		for (int i = 0; i < 5; i++) {
+			xSci = 0;
+			for (int j = 0; j < 5; j++) {
+				btnScientific[i][j] = new JButton(sSci[i][j]);
+				panScientific.add(btnScientific[i][j]);
+				btnScientific[i][j].setBounds(xSci, ySci, w, h);
+				btnScientific[i][j].setMargin(isMargin);
+				xSci = xSci + w + d;
+			}
+			ySci = ySci + h + d;
+		}
+		this.add(panScientific);
+		//Panel angle
+		btgAngle.add(optDegrees);
+		optDegrees.setSelected(true);
+		btgAngle.add(optRadians);
+		btgAngle.add(optGrads);
+		panAngleUnits.add(optDegrees, BorderLayout.WEST);
+		panAngleUnits.add(optRadians, BorderLayout.CENTER);
+		panAngleUnits.add(optGrads, BorderLayout.EAST);
+		this.add(panAngleUnits);
+		
+		
+		//Programmer Panel here
+		//Panel convert Dec Hex Bin Oct
+		btgconvertNum.add(optDec);
+		optDec.setSelected(true);
+		btgconvertNum.add(optHex);
+		btgconvertNum.add(optOct);
+		btgconvertNum.add(optBin);
+		pancvNum.add(optBin, BorderLayout.WEST);
+		pancvNum.add(optOct, BorderLayout.WEST);
+		pancvNum.add(optDec, BorderLayout.WEST);
+		pancvNum.add(optHex, BorderLayout.WEST);
+		this.add(pancvNum);
+		//Panel word...
+		btgWord.add(optQword);
+		optQword.setSelected(true);
+		btgWord.add(optDword);
+		btgWord.add(optWord);
+		btgWord.add(optByte);
+		panWord.add(optQword, FlowLayout.LEFT);
+		panWord.add(optDword, FlowLayout.LEFT);
+		panWord.add(optWord, FlowLayout.LEFT);
+		panWord.add(optByte, FlowLayout.LEFT);
+		
+		this.add(panWord);
+		
+		panPro.setLayout(null);
+		for (int i = 0; i < 6; i++) {
+			xPro = 0;
+			for (int j = 0; j < 3; j++) {
+				btnPro[i][j] = new JButton(sPro[i][j]);
+				panPro.add(btnPro[i][j]);
+				btnPro[i][j].setBounds(xPro, yPro, w, h);
+				btnPro[i][j].setMargin(isMargin);
+				xPro = xPro + w + d;
+			}
+			yPro = yPro + h + d;
+		}
+		this.add(panPro);
 	}
 
 	// Input number var
@@ -511,9 +625,12 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			mniCSci.setIcon(null);
 			mniCPro.setIcon(null);
 			
-			panScientific.setVisible(false);
+			//turn on panel
 			panStandards.setVisible(true);
-			panStandards.setBounds(10, y0, x + w, y + h);
+			panStandards.setBounds(10, y0, xSta + w, ySta + h);
+			panScientific.setVisible(false);
+			panAngleUnits.setVisible(false);
+			//resize the frame
 			this.setSize(5 * w + 4 * d + 30, 6 * h + 4 * d + y0+80);
 		}
 		else if (mode == 2) {
@@ -521,22 +638,44 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			setIconJMenu(mniCSci, "./imgs/dotblue.jpg", 20, 20);
 			mniCPro.setIcon(null);
 			
-			panStandards.setVisible(false);
+			//turn on panel
+			panStandards.setVisible(true);
+			panStandards.setBounds(10 + xSci, y0, xSta + w, ySta + h);
+			panAngleUnits.setVisible(true);
+			panAngleUnits.setBounds(10, y0, xSci, h+d);
 			panScientific.setVisible(true);
-			JOptionPane.showMessageDialog(null, "Working on...");
-			//panStandards.setBounds(10, y0, x + w, y + h);
-			//this.setSize(5 * w + 4 * d + 30, 6 * h + 4 * d + 180);
+			panScientific.setBounds(10, y0 + h + d , xSci, ySci + h);
+			
+			//resize the frame
+			this.setSize(5 * w + 4 * d + 30 + xSci, 6 * h + 4 * d + y0+80);
 		}
 		else if (mode == 3) {
 			mniCSta.setIcon(null);
 			mniCSci.setIcon(null);
 			setIconJMenu(mniCPro, "./imgs/dotblue.jpg", 20, 20);
-			//panStandards.setVisible(false);
-			//panScientific.setVisible(true);
-			JOptionPane.showMessageDialog(null, "Working on...");
-			//panStandards.setBounds(10, y0, x + w, y + h);
-			//this.setSize(5 * w + 4 * d + 30, 6 * h + 4 * d + 180);
+			
+			//addPanel
+			pancvNum.setVisible(true);
+			pancvNum.setBounds(10, y0 + yPBin, 80, 150);
+			panWord.setVisible(true);
+			panWord.setBounds(10, y0 + yPBin+150, 80, 150);
+			
+			panPro.setVisible(true);
+			panPro.setBounds(10 + 100,  y0+yPBin, xPro, yPro+h);
+			panStandards.setVisible(true);
+			panStandards.setBounds(110 + xPro , y0 + yPBin, xSta + w, ySta + h);
+			
+			panAngleUnits.setVisible(false);
+			panScientific.setVisible(false);
+			
+			
+			this.setSize(5 * w + 4 * d + 30 + xSci , 6 * h + 4 * d + y0+80 + yPBin);
 		}
+		
+		txtFormula.setBounds(10, y1, this.getWidth() - 30, widthFml);
+		txtFormula.setEditable(false);
+		txtInput.setBounds(10, y1 + widthFml+15, this.getWidth() - 30, widthInput);
+		txtInput.setEditable(false);
 	}
 	
 	/**
@@ -562,6 +701,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	/**
 	 * @param args
 	 */
+	
 	public static void main(String[] args) {
 		cHW01_Calculator_T151487 f = new cHW01_Calculator_T151487();
 		f.setDefaultCloseOperation(EXIT_ON_CLOSE);
