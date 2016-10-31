@@ -707,8 +707,13 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			//turn on panel
 			panStandards.setVisible(true);
 			panStandards.setBounds(10, y0, xSta + w, ySta + h);
+			
 			panScientific.setVisible(false);
 			panAngleUnits.setVisible(false);
+			panWord.setVisible(false);
+			pancvNum.setVisible(false);
+			panPro.setVisible(false);
+			
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30, 6 * h + 4 * d + y0+80);
 		}
@@ -728,6 +733,9 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			//disable some button
 			btnStandards[2][4].setEnabled(false);
+			panWord.setVisible(false);
+			pancvNum.setVisible(false);
+			panPro.setVisible(false);
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30 + xSci, 6 * h + 4 * d + y0+80);
 		}
