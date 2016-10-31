@@ -137,6 +137,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			}
 			ySta = ySta + h + d;
 		}
+		
 		btnStandards[4][4].setSize(w, h + d + h);
 		btnStandards[5][0].setSize(w + d + w, h);
 		btnStandards[5][1].setLocation((w + d) * 2, ySta - h - d);
@@ -793,7 +794,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
-			System.out.println(mni.getText() +" can't find image resource");
+			System.out.println(mni.getText() + " can't find image resource");
 		}
 	}
 
