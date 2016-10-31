@@ -354,6 +354,20 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			yPro = yPro + h + d;
 		}
 		this.add(panPro);
+		//add radio button convert num
+		ActionListener optConvertNum = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				chkConvertNum();
+			}
+		};
+		optBin.addActionListener(optConvertNum);
+		optOct.addActionListener(optConvertNum);
+		optDec.addActionListener(optConvertNum);
+		optHex.addActionListener(optConvertNum);
+		chkConvertNum();
 	}
 
 	// Input number var
@@ -536,6 +550,70 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		String s1 = getFml();
 		txtFormula.setText(s1);
 	}
+	
+	private void chkConvertNum(){
+		if(optBin.isSelected()){
+			setBtnDis(1);
+		}
+		else if(optOct.isSelected()){
+			setBtnDis(2);
+		}
+		else if(optDec.isSelected()){
+			setBtnDis(3);
+		}
+		else if(optHex.isSelected()){
+			setBtnDis(4);
+		}
+
+	}
+	
+	private void setBtnDis(int stage){
+		//set Enable button first
+		for(int i = 0 ; i < 6 ; i++){
+			for(int j = 0 ; j < 3 ; j++){
+				btnPro[i][j].setEnabled(true);
+			}
+		}
+		for(int i = 2 ; i < 5 ; i++){
+			for(int j = 0 ; j < 3 ; j++){
+				btnStandards[i][j].setEnabled(true);
+			}
+		}
+		
+		//Bin stage
+		if(stage == 1){
+			for(int i = 0 ; i < 6 ; i++){
+				btnPro[i][2].setEnabled(false);
+			}
+			for(int i = 2 ; i < 5 ; i++){
+				for(int j = 0 ; j < 3 ; j++){
+					btnStandards[i][j].setEnabled(false);
+				}
+			}
+			btnStandards[4][0].setEnabled(true);
+			btnStandards[5][0].setEnabled(true);
+		}
+		//Oct stage
+		else if(stage == 2){
+			for(int i = 0 ; i < 6 ; i++){
+				btnPro[i][2].setEnabled(false);
+			}
+			btnStandards[2][1].setEnabled(false);
+			btnStandards[2][2].setEnabled(false);
+		}
+		
+		//Dec stage
+		else if(stage == 3){
+			for(int i = 0 ; i < 6 ; i++){
+				btnPro[i][2].setEnabled(false);
+			}
+		}
+		
+		else if(stage == 4){
+			//do not disable any button
+		}
+		
+	}
 	// menuBar
 	JMenuBar mnbMain = new JMenuBar();
 	// menu
@@ -620,6 +698,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	}
 	
 	private void displayMode(int mode) {
+		//Standard mode
 		if (mode == 1) {
 			setIconJMenu(mniCSta, "./imgs/dotblue.jpg", 20, 20);
 			mniCSci.setIcon(null);
@@ -633,6 +712,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30, 6 * h + 4 * d + y0+80);
 		}
+		//Scientific mode
 		else if (mode == 2) {
 			mniCSta.setIcon(null);
 			setIconJMenu(mniCSci, "./imgs/dotblue.jpg", 20, 20);
@@ -646,9 +726,12 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			panScientific.setVisible(true);
 			panScientific.setBounds(10, y0 + h + d , xSci, ySci + h);
 			
+			//disable some button
+			btnStandards[2][4].setEnabled(false);
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30 + xSci, 6 * h + 4 * d + y0+80);
 		}
+		//Progammer mode
 		else if (mode == 3) {
 			mniCSta.setIcon(null);
 			mniCSci.setIcon(null);
@@ -668,7 +751,13 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			panAngleUnits.setVisible(false);
 			panScientific.setVisible(false);
 			
+			//disable some button
+			for(int i = 1 ; i < 4 ; i++){
+				btnStandards[i][4].setEnabled(false);
+			}
+			btnStandards[5][1].setEnabled(false);
 			
+			//resize the frame
 			this.setSize(5 * w + 4 * d + 30 + xSci , 6 * h + 4 * d + y0+80 + yPBin);
 		}
 		
