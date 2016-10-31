@@ -367,7 +367,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		optOct.addActionListener(optConvertNum);
 		optDec.addActionListener(optConvertNum);
 		optHex.addActionListener(optConvertNum);
-		chkConvertNum();
+		
 	}
 
 	// Input number var
@@ -761,6 +761,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			this.setSize(5 * w + 4 * d + 30 + xSci , 6 * h + 4 * d + y0+80 + yPBin);
 		}
 		
+		chkConvertNum();
 		txtFormula.setBounds(10, y1, this.getWidth() - 30, widthFml);
 		txtFormula.setEditable(false);
 		txtInput.setBounds(10, y1 + widthFml+15, this.getWidth() - 30, widthInput);
@@ -768,7 +769,8 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	}
 	
 	/**
-	 * @param mni JMenuItem 
+	 * set Icon for JMenuItem
+	 * @param which JMenuItem want to add
 	 * @param filename url of image
 	 * @param dx width of image
 	 * @param dy height of image 
