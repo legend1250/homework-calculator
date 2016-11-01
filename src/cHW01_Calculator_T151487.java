@@ -1,6 +1,6 @@
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -11,15 +11,14 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -117,8 +116,10 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 	};
 	
-	
-	
+	//Programmer component
+	String []pBin = new String[16];
+	JLabel [][]lblpBin = new JLabel[4][8];
+	JPanel panPtoNum = new JPanel();
 	
 	private void initComponent() {
 		this.setLayout(null);
@@ -220,7 +221,35 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				calEqual();
 			}
 		});
+		
+		// btn CE
+		btnStandards[1][1].addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtInput.setText("");
+			}
+		});
 	
+		//btn C
+		btnStandards[1][2].addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtInput.setText("");
+				cResult = 0;
+				txtFormula.setText("");
+				setsCal("");
+				blAppend = false;
+				number = "";
+				addCal = false;
+				eq = 0;
+				firstEq = false;
+				eqTmp = 0;
+			}
+		});
 		
 		//btn M
 		btnStandards[0][0].setEnabled(false);
@@ -324,10 +353,11 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		btgconvertNum.add(optHex);
 		btgconvertNum.add(optOct);
 		btgconvertNum.add(optBin);
-		pancvNum.add(optBin, BorderLayout.WEST);
-		pancvNum.add(optOct, BorderLayout.WEST);
-		pancvNum.add(optDec, BorderLayout.WEST);
-		pancvNum.add(optHex, BorderLayout.WEST);
+		pancvNum.add(optHex);
+		pancvNum.add(optDec);
+		pancvNum.add(optOct );
+		pancvNum.add(optBin);
+		pancvNum.setLayout(new GridLayout(4,1));
 		this.add(pancvNum);
 		//Panel word...
 		btgWord.add(optQword);
@@ -335,10 +365,11 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		btgWord.add(optDword);
 		btgWord.add(optWord);
 		btgWord.add(optByte);
-		panWord.add(optQword, FlowLayout.LEFT);
-		panWord.add(optDword, FlowLayout.LEFT);
-		panWord.add(optWord, FlowLayout.LEFT);
-		panWord.add(optByte, FlowLayout.LEFT);
+		panWord.add(optQword);
+		panWord.add(optDword);
+		panWord.add(optWord);
+		panWord.add(optByte);
+		panWord.setLayout(new GridLayout(4,1));
 		
 		this.add(panWord);
 		
@@ -369,6 +400,45 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		optDec.addActionListener(optConvertNum);
 		optHex.addActionListener(optConvertNum);
 		
+		//add JLabel to Bin
+		for(int i = 0 ; i < 16 ; i++){
+			pBin[i] = "0000";
+		}
+		for(int i = 0 ; i < 4 ; i++){
+			for(int j = 0 ; j < 8 ;j++){
+				lblpBin[i][j] = new JLabel("0000");
+				panPtoNum.add(lblpBin[i][j]);;
+			}
+		}
+		panPtoNum.setLayout(new GridLayout(4,8));
+		//disable some lbl
+		for(int i = 0 ; i < 8 ; i++){
+			lblpBin[1][i].setText("");
+			if(i==0){
+				lblpBin[1][i].setText("63");
+			}
+			else if(i==4){
+				lblpBin[1][i].setText("47");
+			}
+			else if(i==7){
+				lblpBin[1][i].setText("32");
+			}
+			lblpBin[1][i].setEnabled(false);
+		}
+		for(int i = 0 ; i < 8 ; i++){
+			lblpBin[3][i].setText("");
+			if(i==0){
+				lblpBin[3][i].setText("31");
+			}
+			else if(i==4){
+				lblpBin[3][i].setText("15");
+			}
+			else if(i==7){
+				lblpBin[3][i].setText("0");
+			}
+			lblpBin[3][i].setEnabled(false);
+		}
+		this.add(panPtoNum);
 	}
 
 	// Input number var
@@ -392,11 +462,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		} else {
 			txtInput.setText(number);
 			blAppend = true;
-		}
-		
-		if(!addCal && firstEq){
-			addingFml(snum);
-			setFmlTxtArea();
 		}
 		
 	}
@@ -714,6 +779,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			panWord.setVisible(false);
 			pancvNum.setVisible(false);
 			panPro.setVisible(false);
+			panPtoNum.setVisible(false);
 			
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30, 6 * h + 4 * d + y0+80);
@@ -737,6 +803,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			panWord.setVisible(false);
 			pancvNum.setVisible(false);
 			panPro.setVisible(false);
+			panPtoNum.setVisible(false);
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30 + xSci, 6 * h + 4 * d + y0+80);
 		}
@@ -747,15 +814,18 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			setIconJMenu(mniCPro, "./imgs/dotblue.jpg", 20, 20);
 			
 			//addPanel
+			int x1 = 20;
 			pancvNum.setVisible(true);
-			pancvNum.setBounds(10, y0 + yPBin, 80, 150);
+			pancvNum.setBounds(x1, y0 + yPBin, 80, 150);
 			panWord.setVisible(true);
-			panWord.setBounds(10, y0 + yPBin+150, 80, 150);
+			panWord.setBounds(x1, y0 + yPBin+150, 80, 150);
 			
 			panPro.setVisible(true);
 			panPro.setBounds(10 + 100,  y0+yPBin, xPro, yPro+h);
 			panStandards.setVisible(true);
 			panStandards.setBounds(110 + xPro , y0 + yPBin, xSta + w, ySta + h);
+			panPtoNum.setVisible(true);
+			panPtoNum.setBounds(10, widthFml + widthFml-10 , 5 * w + 4 * d + 30 + xSci , 80);
 			
 			panAngleUnits.setVisible(false);
 			panScientific.setVisible(false);
@@ -773,8 +843,11 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		chkConvertNum();
 		txtFormula.setBounds(10, y1, this.getWidth() - 30, widthFml);
 		txtFormula.setEditable(false);
-		txtInput.setBounds(10, y1 + widthFml+15, this.getWidth() - 30, widthInput);
+		txtInput.setBounds(10, y1 + widthFml+10, this.getWidth() - 30, widthInput);
 		txtInput.setEditable(false);
+		txtInput.setFont(new Font(txtInput.getFont().toString(), Font.BOLD, txtInput.getFont().getSize()+10));
+		txtInput.setHorizontalAlignment(txtInput.RIGHT);
+		
 	}
 	
 	/**
