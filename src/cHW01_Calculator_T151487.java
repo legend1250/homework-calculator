@@ -533,19 +533,27 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			}
 		}
 		
-		if(optBin.isSelected()){
-			sProgrammerBin = number;
-			
-		}
-		else if(optOct.isSelected()){
-			sProgrammerOct = number;
-		}
-		else if(optHex.isSelected()){
-			sProgrammerHex = number;
-		}
+		
 		
 		if(panPro.isVisible()){
-			converInputtoBin(Integer.parseInt(number));
+			int nDec = 0;
+			if(optBin.isSelected()){
+				sProgrammerBin = number;
+				nDec = convertOthertoDec(1);
+			}
+			else if(optOct.isSelected()){
+				sProgrammerOct = number;
+				nDec = convertOthertoDec(2);
+			}
+			else if(optDec.isSelected()){
+				nDec = convertOthertoDec(3);
+				
+			}
+			else if(optHex.isSelected()){
+				sProgrammerHex = number;
+				nDec = convertOthertoDec(4);
+			}
+			converInputtoBin(nDec);
 		}
 	}
 
