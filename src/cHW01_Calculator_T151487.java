@@ -262,12 +262,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 					setStageConvertNum(4);
 				}
 				sProgrammerBin="0"; sProgrammerDec="0"; sProgrammerOct = "0";sProgrammerHex= "0";
-				
-				for(int i = 0 ; i < 4 ; i+=2){
-					for(int j = 0 ; j < 8 ;j++){
-						lblpBin[i][j].setText("0000");
-					}
-				}
+				clearBinLabel();
 			}
 		});
 		
@@ -458,7 +453,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				
 				blAppend = false;
 				chkConvertNum();
-				System.out.println(sProgrammerBin);
 			}
 		};
 		optBin.addActionListener(optConvertNum);
@@ -590,7 +584,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		}
 		
 		
-		
 		if(panPro.isVisible()){
 			int nDec = 0;
 			if(optBin.isSelected()){
@@ -609,6 +602,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				sProgrammerHex = number;
 				nDec = convertOthertoDec(4);
 			}
+			clearBinLabel();
 			converInputtoBin(nDec);
 		}
 	}
@@ -923,6 +917,14 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		return StageNum;
 	}
 	
+	private void clearBinLabel(){
+		for(int i = 0 ; i < 4 ; i+=2){
+			for(int j = 0 ; j < 8 ;j++){
+				lblpBin[i][j].setText("0000");
+			}
+		}
+	}
+	
 	
 	private void converInputtoBin(int num){
 		String sResult ="";
@@ -940,7 +942,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			i++;
 		}
 		
-		System.out.println(sResult);
+		//System.out.println(sResult);
 		setTextLabelBin(sResult);
 	}
 	
@@ -948,11 +950,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		String []sLabel = sBin.split("\\s+");
 		int StartLabelST = 7;
 		
-		if(sLabel.length > StartLabelST){
-			
-		}
-		else{
-			
+		if(sLabel.length <= StartLabelST){
 			for(int i = 0 ; i < sLabel.length ; i++){
 				int p = sLabel.length - i-1;
 				if(sLabel[p].length() >= 4){
@@ -969,6 +967,25 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				}
 				
 			}
+		}
+		else{
+			for(int i = 0 ; i < sLabel.length ; i++){
+				int p = sLabel.length - i-1;
+				if(sLabel[p].length() >= 4){
+					lblpBin[0][StartLabelST-i +7].setText(sLabel[p]);
+				}
+				else if (sLabel[p].length() >= 3){
+					lblpBin[0][StartLabelST-i +7].setText("0"+sLabel[p]);
+				}
+				else if (sLabel[p].length() >= 2){
+					lblpBin[0][StartLabelST-i +7].setText("00"+sLabel[p]);
+				}
+				else if (sLabel[p].length() >= 1){
+					lblpBin[0][StartLabelST-i +7].setText("000"+sLabel[p]);
+				}
+				
+			}
+			
 		}
 		
 		
