@@ -1,7 +1,9 @@
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +26,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 /**
  * 
@@ -227,7 +230,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				txtInput.setText("");
 			}
 		});
@@ -237,8 +239,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				txtInput.setText("");
+				txtInput.setText("0");
 				cResult = 0;
 				txtFormula.setText("");
 				setsCal("");
@@ -248,6 +249,25 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				eq = 0;
 				firstEq = false;
 				eqTmp = 0;
+				if(optBin.isSelected()){
+					setStageConvertNum(1);
+				}
+				else if(optOct.isSelected()){
+					setStageConvertNum(2);
+				}
+				else if(optDec.isSelected()){
+					setStageConvertNum(3);
+				}
+				else if(optHex.isSelected()){
+					setStageConvertNum(4);
+				}
+				sProgrammerBin="0"; sProgrammerDec="0"; sProgrammerOct = "0";sProgrammerHex= "0";
+				
+				for(int i = 0 ; i < 4 ; i+=2){
+					for(int j = 0 ; j < 8 ;j++){
+						lblpBin[i][j].setText("0000");
+					}
+				}
 			}
 		});
 		
@@ -319,6 +339,15 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		btnStandards[1][4].addActionListener(someBtn);
 		btnStandards[3][4].addActionListener(someBtn);
 		
+		/*btnStandards[1][0].addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!addCal){
+					txtInput.setText(txtInput.getText().substring(0, txtInput.getText().length()-1));
+				}
+			}
+		});*/
 		
 		//Scientific Panel here
 		panScientific.setLayout(null);
@@ -391,14 +420,52 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				int nStage = getStageConvertNum();
+				int cNum;
+				String sInput = txtInput.getText();
+				
+				if(optBin.isSelected()){
+					
+					cNum = convertOthertoDec(nStage);
+					convertDectoOther(cNum);
+					txtInput.setText(sProgrammerBin);
+					setStageConvertNum(1);
+					
+				}
+				else if(optOct.isSelected()){
+					
+					cNum = convertOthertoDec(nStage);
+					convertDectoOther(cNum);
+					txtInput.setText(sProgrammerOct);
+					setStageConvertNum(2);
+					
+				}
+				else if(optDec.isSelected()){
+					
+					cNum = convertOthertoDec(nStage);
+					txtInput.setText(cNum+"");
+					setStageConvertNum(3);
+					
+				}
+				else if(optHex.isSelected()){
+					
+					cNum = convertOthertoDec(nStage);
+					convertDectoOther(cNum);
+					txtInput.setText(sProgrammerHex);
+					setStageConvertNum(4);
+					
+				}
+				
+				blAppend = false;
 				chkConvertNum();
+				System.out.println(sProgrammerBin);
 			}
 		};
 		optBin.addActionListener(optConvertNum);
 		optOct.addActionListener(optConvertNum);
 		optDec.addActionListener(optConvertNum);
 		optHex.addActionListener(optConvertNum);
+		
 		
 		//add JLabel to Bin
 		for(int i = 0 ; i < 16 ; i++){
@@ -460,10 +527,26 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			number = txtInput.getText() + number;
 			txtInput.setText(number);
 		} else {
-			txtInput.setText(number);
-			blAppend = true;
+			if(!number.equals("0")){
+				txtInput.setText(number);
+				blAppend = true;
+			}
 		}
 		
+		if(optBin.isSelected()){
+			sProgrammerBin = number;
+			
+		}
+		else if(optOct.isSelected()){
+			sProgrammerOct = number;
+		}
+		else if(optHex.isSelected()){
+			sProgrammerHex = number;
+		}
+		
+		if(panPro.isVisible()){
+			converInputtoBin(Integer.parseInt(number));
+		}
 	}
 
 	private void calcualting() {
@@ -608,9 +691,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		return sFml;
 	}
 	
-	private void addingFml(String s1){
-		this.sFml += s1;
-	}
 	
 	private void setFmlTxtArea(){
 		String s1 = getFml();
@@ -618,6 +698,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	}
 	
 	private void chkConvertNum(){
+		
 		if(optBin.isSelected()){
 			setBtnDis(1);
 		}
@@ -630,7 +711,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		else if(optHex.isSelected()){
 			setBtnDis(4);
 		}
-
+		
 	}
 	
 	private void setBtnDis(int stage){
@@ -678,6 +759,154 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		else if(stage == 4){
 			//do not disable any button
 		}
+		
+	}
+	
+	String 	sProgrammerBin = "",
+			sProgrammerOct = "",
+			sProgrammerDec = "",
+			sProgrammerHex = "";
+	
+	private void convertDectoOther(int num){
+		int nBin = num;
+		int nOct = num;
+		int nHex = num;
+		
+		sProgrammerBin = "";
+		sProgrammerOct = "";
+		sProgrammerHex = "";
+		
+		while(nBin>0){
+			sProgrammerBin = nBin%2 + sProgrammerBin;
+			nBin /=2;
+		}
+		
+		while(nOct>0){
+			sProgrammerOct = nOct%8 + sProgrammerOct;
+			nOct /=8;
+		}
+		
+		String []sHex = {"A","B","C","D","E","F"};
+		while(nHex>0){
+			if(nHex%16 >= 10){
+				sProgrammerHex = sHex[nHex%16-10] + sProgrammerHex;
+			}
+			else{
+				sProgrammerHex = nHex%16 + sProgrammerHex;
+			}
+			nHex /=16;
+		}
+		
+		if(num==0){
+			sProgrammerBin = "0";
+			sProgrammerOct = "0";
+			sProgrammerHex = "0";
+		}
+		
+	}
+	
+	private int convertOthertoDec(int nStage){
+		int result = 0 ;
+		
+		if(nStage == 1){
+			
+			String sBin = sProgrammerBin;
+			for(int i = 0 ; i < sBin.length() ; i++){
+				result += Math.pow(2,sBin.length()-i-1) * (sBin.charAt(i)-48);
+			}
+			
+		}
+		else if(nStage == 2){
+			
+			String sOct = sProgrammerOct;
+			for(int i = 0 ; i < sOct.length() ; i++){
+				result += Math.pow(8,sOct.length()-i-1) * (sOct.charAt(i)-48);
+			}
+			
+		}
+		
+		else if(nStage==3){
+			
+			result = Integer.parseInt(txtInput.getText());
+			
+		}
+		else if(nStage == 4){
+			String sHex = sProgrammerHex;
+			int []nHex = {10,11,12,13,14,15};
+			
+			for(int i = 0 ; i < sHex.length() ; i++){
+				if(sHex.charAt(i) >= 65){
+					result += Math.pow(16,sHex.length()-i-1) * nHex[(sHex.charAt(i)-65)];
+				}
+				else{
+					result += Math.pow(16,sHex.length()-i-1) * (sHex.charAt(i)-48);
+				}
+				
+			}
+			
+		}
+		
+		return result;
+	}
+	
+	int StageNum = 0;
+	
+	private void setStageConvertNum(int n){
+		this.StageNum = n;
+	}
+	
+	private int getStageConvertNum(){
+		return StageNum;
+	}
+	
+	
+	private void converInputtoBin(int num){
+		String sResult ="";
+		
+		int i = 0;
+		
+		while(num>0){
+			if(i%4==0){
+				sResult = num%2 + " " + sResult ;
+			}
+			else{
+				sResult = num%2 + sResult;
+			}
+			num /=2;
+			i++;
+		}
+		
+		System.out.println(sResult);
+		setTextLabelBin(sResult);
+	}
+	
+	private void setTextLabelBin(String sBin){
+		String []sLabel = sBin.split("\\s+");
+		int StartLabelST = 7;
+		
+		if(sLabel.length > StartLabelST){
+			
+		}
+		else{
+			
+			for(int i = 0 ; i < sLabel.length ; i++){
+				int p = sLabel.length - i-1;
+				if(sLabel[p].length() >= 4){
+					lblpBin[2][StartLabelST-i].setText(sLabel[p]);
+				}
+				else if (sLabel[p].length() >= 3){
+					lblpBin[2][StartLabelST-i].setText("0"+sLabel[p]);
+				}
+				else if (sLabel[p].length() >= 2){
+					lblpBin[2][StartLabelST-i].setText("00"+sLabel[p]);
+				}
+				else if (sLabel[p].length() >= 1){
+					lblpBin[2][StartLabelST-i].setText("000"+sLabel[p]);
+				}
+				
+			}
+		}
+		
 		
 	}
 	// menuBar
@@ -836,6 +1065,9 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			}
 			btnStandards[5][1].setEnabled(false);
 			
+			//set StageNum 
+			this.StageNum = 3;
+			
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30 + xSci , 6 * h + 4 * d + y0+80 + yPBin);
 		}
@@ -845,8 +1077,10 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		txtFormula.setEditable(false);
 		txtInput.setBounds(10, y1 + widthFml+10, this.getWidth() - 30, widthInput);
 		txtInput.setEditable(false);
-		txtInput.setFont(new Font(txtInput.getFont().toString(), Font.BOLD, txtInput.getFont().getSize()+10));
-		txtInput.setHorizontalAlignment(txtInput.RIGHT);
+		txtInput.setFont(new Font(txtInput.getFont().toString(), Font.BOLD, 27));
+		txtInput.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtInput.setText("0");
+		blAppend = false;
 		
 	}
 	
@@ -861,7 +1095,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		
 		try {
 			BufferedImage image = ImageIO.read(new File(filename));
-			ImageIcon icon = new ImageIcon(image.getScaledInstance(dx, dy, image.SCALE_SMOOTH));
+			ImageIcon icon = new ImageIcon(image.getScaledInstance(dx, dy, Image.SCALE_SMOOTH));
 			mni.setIcon(icon);
 			
 		} catch (IOException e) {
