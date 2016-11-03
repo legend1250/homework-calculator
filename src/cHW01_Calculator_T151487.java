@@ -477,6 +477,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				panPtoNum.add(lblpBin[i][j]);;
 			}
 		}
+		this.add(panPtoNum);
 		panPtoNum.setLayout(new GridLayout(4,8));
 		//disable some lbl
 		for(int i = 0 ; i < 8 ; i++){
@@ -505,7 +506,62 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			}
 			lblpBin[3][i].setEnabled(false);
 		}
-		this.add(panPtoNum);
+		
+		ActionListener actW = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				for(int i = 0 ; i < 4 ; i++){
+					for(int j = 0 ; j < 8 ;j++){
+						lblpBin[i][j].setVisible(true);;
+					}
+				}
+				
+				if(arg0.getSource().equals(optQword)){
+					
+				}
+				else if (arg0.getSource().equals(optDword)){
+					for(int i = 0 ; i < 2 ; i++){
+						for(int j = 0 ; j < 8 ;j++){
+							lblpBin[i][j].setVisible(false);;
+						}
+					}
+				}
+				else if (arg0.getSource().equals(optWord)){
+					for(int i = 0 ; i < 2 ; i++){
+						for(int j = 0 ; j < 8 ;j++){
+							lblpBin[i][j].setVisible(false);;
+						}
+					}
+					for(int i = 2 ; i < 4 ; i++){
+						for(int j = 0 ; j < 4 ;j++){
+							lblpBin[i][j].setVisible(false);;
+						}
+					}
+				}
+				else if (arg0.getSource().equals(optByte)){
+					for(int i = 0 ; i < 2 ; i++){
+						for(int j = 0 ; j < 8 ;j++){
+							lblpBin[i][j].setVisible(false);;
+						}
+					}
+					for(int i = 2 ; i < 4 ; i++){
+						for(int j = 0 ; j < 6 ;j++){
+							lblpBin[i][j].setVisible(false);;
+						}
+					}
+				}
+				
+
+			}
+		};
+		
+		optQword.addActionListener(actW);
+		optDword.addActionListener(actW);
+		optWord.addActionListener(actW);
+		optByte.addActionListener(actW);
+		
 	}
 
 	// Input number var
