@@ -433,7 +433,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int nStage = getStageConvertNum();
 				int cNum;
-				String sInput = txtInput.getText();
+				//String sInput = txtInput.getText();
 				
 				if(optBin.isSelected()){
 					
