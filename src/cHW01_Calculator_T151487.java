@@ -1,7 +1,6 @@
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
@@ -27,6 +26,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 
 /**
  * 
@@ -42,7 +42,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	JTextArea txtFormula = new JTextArea();
 	JTextField txtInput = new JTextField();
 	int y0 = 150; // panel start from this y0
-	int y1 = 10, widthInput = 35, widthFml = 70;
+	int y1 = 10, heightInput = 35, heightFml = 65;
 
 	public cHW01_Calculator_T151487() {
 		setTitle("Calculator");
@@ -454,7 +454,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				else if(optDec.isSelected()){
 					
 					cNum = convertOthertoDec(nStage);
-					txtInput.setText(cNum+"");
+					txtInput.setText(String.valueOf(cNum));
 					setStageConvertNum(3);
 					
 				}
@@ -468,7 +468,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				}
 				
 				blAppend = false;
-				chkConvertNum();
+				setDisplayButton(getStageConvertNum());
 			}
 		};
 		optBin.addActionListener(optConvertNum);
@@ -773,24 +773,8 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		txtFormula.setText(s1);
 	}
 	
-	private void chkConvertNum(){
-		
-		if(optBin.isSelected()){
-			setBtnDis(1);
-		}
-		else if(optOct.isSelected()){
-			setBtnDis(2);
-		}
-		else if(optDec.isSelected()){
-			setBtnDis(3);
-		}
-		else if(optHex.isSelected()){
-			setBtnDis(4);
-		}
-		
-	}
 	
-	private void setBtnDis(int stage){
+	private void setDisplayButton(int stage){
 		//set Enable button first
 		for(int i = 0 ; i < 6 ; i++){
 			for(int j = 0 ; j < 3 ; j++){
@@ -1143,17 +1127,21 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			//addPanel
 			int x1 = 20;
+			int w1 = 80;
+			int h1 = yPro/2-10;
 			pancvNum.setVisible(true);
-			pancvNum.setBounds(x1, y0 + yPBin, 80, 150);
+			pancvNum.setBounds(x1, y0 + yPBin, w1, h1);
+			pancvNum.setBorder(new EtchedBorder()); //set border
 			panWord.setVisible(true);
-			panWord.setBounds(x1, y0 + yPBin+150, 80, 150);
-			
+			panWord.setBounds(x1, y0 + yPBin+h1 + d, w1, h1);
+			panWord.setBorder(new EtchedBorder()); //set border
 			panPro.setVisible(true);
 			panPro.setBounds(10 + 100,  y0+yPBin, xPro, yPro+h);
 			panStandards.setVisible(true);
 			panStandards.setBounds(110 + xPro , y0 + yPBin, xSta + w, ySta + h);
 			panPtoNum.setVisible(true);
-			panPtoNum.setBounds(10, widthFml + widthFml-10 , 5 * w + 4 * d + 30 + xSci , 80);
+			panPtoNum.setBounds(x1, heightFml + heightInput+25 , xPro + xSta + w1 , 80);
+			panPtoNum.setBorder(new EtchedBorder()); //set border
 			
 			panAngleUnits.setVisible(false);
 			panScientific.setVisible(false);
@@ -1166,15 +1154,16 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			//set StageNum 
 			this.StageNum = 3;
+			setDisplayButton(getStageConvertNum());
 			
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30 + xSci , 6 * h + 4 * d + y0+80 + yPBin);
 		}
 		
-		chkConvertNum();
-		txtFormula.setBounds(10, y1, this.getWidth() - 30, widthFml);
+		
+		txtFormula.setBounds(10, y1, this.getWidth() - 30, heightFml);
 		txtFormula.setEditable(false);
-		txtInput.setBounds(10, y1 + widthFml+10, this.getWidth() - 30, widthInput);
+		txtInput.setBounds(10, y1 + heightFml+10, this.getWidth() - 30, heightInput);
 		txtInput.setEditable(false);
 		txtInput.setFont(new Font(txtInput.getFont().toString(), Font.BOLD, 27));
 		txtInput.setHorizontalAlignment(SwingConstants.RIGHT);
