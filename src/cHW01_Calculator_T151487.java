@@ -410,6 +410,22 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			yPro = yPro + h + d;
 		}
 		this.add(panPro);
+		//Actionlistener for HEX
+		ActionListener actProHEX = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JButton btnHex = (JButton) e.getSource();
+				pressNumber(btnHex.getText());
+			}
+		};
+		
+		for(int i = 0 ; i < 6 ; i++){
+			btnPro[i][2].addActionListener(actProHEX);
+		}
+		
+		
 		//add radio button convert num
 		ActionListener optConvertNum = new ActionListener() {
 			
@@ -556,6 +572,8 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		optWord.addActionListener(actW);
 		optByte.addActionListener(actW);
 		
+		
+		
 	}
 
 	// Input number var
@@ -603,7 +621,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				nDec = convertOthertoDec(4);
 			}
 			clearBinLabel();
-			converInputtoBin(nDec);
+			convertInputtoBin(nDec);
 		}
 	}
 
@@ -926,7 +944,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	}
 	
 	
-	private void converInputtoBin(int num){
+	private void convertInputtoBin(int num){
 		String sResult ="";
 		
 		int i = 0;
