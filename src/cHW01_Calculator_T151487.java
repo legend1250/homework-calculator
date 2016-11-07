@@ -279,7 +279,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				}
 				if (!txtInput.getText().isEmpty()){
 					if (btnM.getText().equals("MR")){
-						txtInput.setText(MS+"");
+						txtInput.setText(String.valueOf(MS));
 					}
 					else if (btnM.getText().equals("MS")){
 						MS = Double.parseDouble(txtInput.getText());
