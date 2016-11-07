@@ -261,7 +261,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				else if(optHex.isSelected()){
 					setStageConvertNum(4);
 				}
-				sProgrammerBin="0"; sProgrammerDec="0"; sProgrammerOct = "0";sProgrammerHex= "0";
 				clearBinLabel();
 			}
 		});
@@ -431,43 +430,42 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int nStage = getStageConvertNum();
-				int cNum;
-				//String sInput = txtInput.getText();
 				
+				int nCurrentStage = getStageConvertNum();
+				String sInput = txtInput.getText();
+				String output = "";
+				int cNum;
 				if(optBin.isSelected()){
 					
-					cNum = convertOthertoDec(nStage);
-					convertDectoOther(cNum);
-					txtInput.setText(sProgrammerBin);
+					cNum = convertOthertoDec(sInput, nCurrentStage);
+					output = convertDectoOther(cNum, 1);
 					setStageConvertNum(1);
 					
 				}
 				else if(optOct.isSelected()){
 					
-					cNum = convertOthertoDec(nStage);
-					convertDectoOther(cNum);
-					txtInput.setText(sProgrammerOct);
+					cNum = convertOthertoDec(sInput, nCurrentStage);
+					output = convertDectoOther(cNum, 2);
 					setStageConvertNum(2);
 					
 				}
 				else if(optDec.isSelected()){
 					
-					cNum = convertOthertoDec(nStage);
-					txtInput.setText(String.valueOf(cNum));
+					cNum = convertOthertoDec(sInput, nCurrentStage);
+					output = convertDectoOther(cNum, 3);
 					setStageConvertNum(3);
 					
 				}
 				else if(optHex.isSelected()){
 					
-					cNum = convertOthertoDec(nStage);
-					convertDectoOther(cNum);
-					txtInput.setText(sProgrammerHex);
+					cNum = convertOthertoDec(sInput, nCurrentStage);
+					output = convertDectoOther(cNum, 4);
 					setStageConvertNum(4);
 					
 				}
-				
+			
 				blAppend = false;
+				txtInput.setText(output);		
 				setDisplayButton(getStageConvertNum());
 			}
 		};
@@ -489,7 +487,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		}
 		this.add(panPtoNum);
 		panPtoNum.setLayout(new GridLayout(4,8));
-		//disable some lbl
+		//disable some Label
 		for(int i = 0 ; i < 8 ; i++){
 			lblpBin[1][i].setText("");
 			if(i==0){
@@ -499,7 +497,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				lblpBin[1][i].setText("47");
 			}
 			else if(i==7){
-				lblpBin[1][i].setText("32");
+				lblpBin[1][i].setText("    32");
 			}
 			lblpBin[1][i].setEnabled(false);
 		}
@@ -512,7 +510,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				lblpBin[3][i].setText("15");
 			}
 			else if(i==7){
-				lblpBin[3][i].setText("0");
+				lblpBin[3][i].setText("       0");
 			}
 			lblpBin[3][i].setEnabled(false);
 		}
@@ -605,26 +603,23 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		if(panPro.isVisible()){
 			int nDec = 0;
 			if(optBin.isSelected()){
-				sProgrammerBin = number;
-				nDec = convertOthertoDec(1);
+				nDec = convertOthertoDec(number, 1);
 			}
 			else if(optOct.isSelected()){
-				sProgrammerOct = number;
-				nDec = convertOthertoDec(2);
+				nDec = convertOthertoDec(number, 2);
 			}
 			else if(optDec.isSelected()){
-				nDec = convertOthertoDec(3);
+				nDec = convertOthertoDec(number, 3);
 				
 			}
 			else if(optHex.isSelected()){
-				sProgrammerHex = number;
-				nDec = convertOthertoDec(4);
+				nDec = convertOthertoDec(number, 4);
 			}
 			clearBinLabel();
 			convertInputtoBin(nDec);
 		}
 	}
-
+	
 	private void calcualting() {
 		String sOper = getsCal();
 		if (sOper.equals("+")) {
@@ -822,88 +817,86 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		
 	}
 	
-	String 	sProgrammerBin = "",
-			sProgrammerOct = "",
-			sProgrammerDec = "",
-			sProgrammerHex = "";
 	
-	private void convertDectoOther(int num){
-		int nBin = num;
-		int nOct = num;
-		int nHex = num;
+	/**
+	 * @param num: integer of Dec, nStage
+	 * @return 
+	 */
+	private String convertDectoOther(int num, int nStage){
+		String result="";
+		int nDec = num;
 		
-		sProgrammerBin = "";
-		sProgrammerOct = "";
-		sProgrammerHex = "";
-		
-		while(nBin>0){
-			sProgrammerBin = nBin%2 + sProgrammerBin;
-			nBin /=2;
-		}
-		
-		while(nOct>0){
-			sProgrammerOct = nOct%8 + sProgrammerOct;
-			nOct /=8;
-		}
-		
-		String []sHex = {"A","B","C","D","E","F"};
-		while(nHex>0){
-			if(nHex%16 >= 10){
-				sProgrammerHex = sHex[nHex%16-10] + sProgrammerHex;
+		if(nStage == 1){
+			while(nDec>0){
+				result = nDec%2 + result;
+				nDec /=2;
 			}
-			else{
-				sProgrammerHex = nHex%16 + sProgrammerHex;
+		}
+		else if(nStage == 2){
+			while(nDec>0){
+				result = nDec%8 + result;
+				nDec /=8;
 			}
-			nHex /=16;
+		}
+		else if(nStage==3){
+			result = String.valueOf(num);
+		}
+		else if(nStage == 4){
+			String []sHex = {"A","B","C","D","E","F"};
+			while(nDec>0){
+				if(nDec%16 >= 10){
+					result = sHex[nDec%16-10] + result;
+				}
+				else{
+					result = nDec%16 + result;
+				}
+				nDec /=16;
+			}
 		}
 		
 		if(num==0){
-			sProgrammerBin = "0";
-			sProgrammerOct = "0";
-			sProgrammerHex = "0";
+			result = "0";
 		}
 		
+		return result;
 	}
 	
-	private int convertOthertoDec(int nStage){
+	
+	/**
+	 * @param: int nStageOfConvertNum, String
+	 * @return: integer of Dec
+	 */
+	
+	private int convertOthertoDec(String str, int nStage){
 		int result = 0 ;
 		
 		if(nStage == 1){
-			
-			String sBin = sProgrammerBin;
-			for(int i = 0 ; i < sBin.length() ; i++){
-				result += Math.pow(2,sBin.length()-i-1) * (sBin.charAt(i)-48);
+			for(int i = 0 ; i < str.length() ; i++){
+				result += Math.pow(2,str.length()-i-1) * (str.charAt(i)-48);
 			}
-			
 		}
+		
 		else if(nStage == 2){
-			
-			String sOct = sProgrammerOct;
-			for(int i = 0 ; i < sOct.length() ; i++){
-				result += Math.pow(8,sOct.length()-i-1) * (sOct.charAt(i)-48);
+			for(int i = 0 ; i < str.length() ; i++){
+				result += Math.pow(8,str.length()-i-1) * (str.charAt(i)-48);
 			}
-			
 		}
 		
 		else if(nStage==3){
-			
-			result = Integer.parseInt(txtInput.getText());
-			
+			result = Integer.parseInt(str);
 		}
+		
 		else if(nStage == 4){
-			String sHex = sProgrammerHex;
 			int []nHex = {10,11,12,13,14,15};
-			
-			for(int i = 0 ; i < sHex.length() ; i++){
-				if(sHex.charAt(i) >= 65){
-					result += Math.pow(16,sHex.length()-i-1) * nHex[(sHex.charAt(i)-65)];
+			for(int i = 0 ; i < str.length() ; i++){
+				if(str.charAt(i) >= 65){
+					result += Math.pow(16,str.length()-i-1) * nHex[(str.charAt(i)-65)];
 				}
 				else{
-					result += Math.pow(16,sHex.length()-i-1) * (sHex.charAt(i)-48);
+					result += Math.pow(16,str.length()-i-1) * (str.charAt(i)-48);
 				}
 				
 			}
-			
 		}
 		
 		return result;
@@ -1126,7 +1119,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			setIconJMenu(mniCPro, "./imgs/dotblue.jpg", 20, 20);
 			
 			//addPanel
-			int x1 = 20;
+			int x1 = 10;
 			int w1 = 80;
 			int h1 = yPro/2-10;
 			pancvNum.setVisible(true);
@@ -1140,7 +1133,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			panStandards.setVisible(true);
 			panStandards.setBounds(110 + xPro , y0 + yPBin, xSta + w, ySta + h);
 			panPtoNum.setVisible(true);
-			panPtoNum.setBounds(x1, heightFml + heightInput+25 , xPro + xSta + w1 , 80);
+			panPtoNum.setBounds(x1, heightFml + heightInput+25 , xPro + xSta + w1+10 , w1);
 			panPtoNum.setBorder(new EtchedBorder()); //set border
 			
 			panAngleUnits.setVisible(false);
