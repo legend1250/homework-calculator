@@ -9,17 +9,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -1054,10 +1058,23 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				else if(mniT.equals(mniCPro)){
 					displayMode(3);
 				}
-				 if(mniT.equals(mniExit)){
+				else if(mniT.equals(mniExit)){
 					System.exit(0);
 				}
-				
+				else if(mniT.equals(mniAboutJava)){
+					try {
+						String strContent = "";
+						Scanner reader = new Scanner(new File("./text/AboutJava.txt"));
+						while (reader.hasNextLine()){
+							strContent += reader.nextLine();
+						}
+						reader.close();
+						showAboutJava(strContent);
+					} catch (FileNotFoundException e1) {
+						JOptionPane.showMessageDialog(null, "ERROR! AboutJava.txt not found");
+					}
+					
+				}
 			}
 		};
 		
@@ -1065,7 +1082,14 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		mniCSci.addActionListener(actMni);
 		mniCPro.addActionListener(actMni);
 		mniExit.addActionListener(actMni);
-		
+		mniAboutJava.addActionListener(actMni);
+	}
+	
+	private void showAboutJava(String strContent){
+		showAboutJava a = new showAboutJava();
+		a.setModal(true);
+		a.setVisible(true);
+		a.dispose();
 	}
 	
 	private void displayMode(int mode) {
@@ -1099,7 +1123,8 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			panStandards.setVisible(true);
 			panStandards.setBounds(10 + xSci, y0, xSta + w, ySta + h);
 			panAngleUnits.setVisible(true);
-			panAngleUnits.setBounds(10, y0, xSci, h+d);
+			panAngleUnits.setBounds(10, y0, xSci-d, h);
+			panAngleUnits.setBorder(new EtchedBorder());
 			panScientific.setVisible(true);
 			panScientific.setBounds(10, y0 + h + d , xSci, ySci + h);
 			
