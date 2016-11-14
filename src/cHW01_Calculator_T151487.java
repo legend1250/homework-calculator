@@ -266,6 +266,8 @@ public class cHW01_Calculator_T151487 extends JFrame {
 					setStageConvertNum(4);
 				}
 				clearBinLabel();
+				//set empty strCopyPaste
+				strCopyPaste = "";
 			}
 		});
 		
@@ -314,21 +316,21 @@ public class cHW01_Calculator_T151487 extends JFrame {
 					if(!txtInput.getText().isEmpty()){
 						double x = Double.parseDouble(txtInput.getText())*(-1); // +/- button
 						setCurrentResult(x);
-						txtInput.setText(getCurrentResult()+"");
+						txtInput.setText(String.valueOf(getCurrentResult()));
 					}
 				}
 				else if (btnF.equals(btnStandards[1][4])){
 					if(!txtInput.getText().isEmpty()){
 						double x = Math.sqrt(Double.parseDouble(txtInput.getText())); //sqrt button
 						setCurrentResult(x);
-						txtInput.setText(getCurrentResult()+"");
+						txtInput.setText(String.valueOf(getCurrentResult()));
 					}
 				}
 				else if (btnF.equals(btnStandards[3][4])){
 					if(!txtInput.getText().isEmpty()){
 						double x = 1/Double.parseDouble(txtInput.getText()); // 1/x button
 						setCurrentResult(x);
-						txtInput.setText(getCurrentResult()+"");
+						txtInput.setText(String.valueOf(getCurrentResult()));
 					}
 				}
 			}
@@ -418,7 +420,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				JButton btnHex = (JButton) e.getSource();
 				pressNumber(btnHex.getText());
 			}
@@ -523,7 +524,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				for(int i = 0 ; i < 4 ; i++){
 					for(int j = 0 ; j < 8 ;j++){
 						lblpBin[i][j].setVisible(true);;
@@ -1075,6 +1075,12 @@ public class cHW01_Calculator_T151487 extends JFrame {
 					}
 					
 				}
+				else if(mniT.equals(mniCopy)){
+					strCopyPaste = txtInput.getText();
+				}
+				else if(mniT.equals(mniPaste)){
+					txtInput.setText(strCopyPaste);
+				}
 			}
 		};
 		
@@ -1083,7 +1089,12 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		mniCPro.addActionListener(actMni);
 		mniExit.addActionListener(actMni);
 		mniAboutJava.addActionListener(actMni);
+		mniCopy.addActionListener(actMni);
+		mniPaste.addActionListener(actMni);
+		
 	}
+	
+	private String strCopyPaste = "";
 	
 	private void showAboutJava(String strContent){
 		showAboutJava a = new showAboutJava();
@@ -1174,6 +1185,9 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			this.StageNum = 3;
 			setDisplayButton(getStageConvertNum());
 			
+			//set empty strCopyPaste
+			strCopyPaste = "";
+			
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30 + xSci , 6 * h + 4 * d + y0+80 + yPBin);
 		}
@@ -1183,7 +1197,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		txtFormula.setEditable(false);
 		txtInput.setBounds(10, y1 + heightFml+10, this.getWidth() - 30, heightInput);
 		txtInput.setEditable(false);
-		txtInput.setFont(new Font(txtInput.getFont().toString(), Font.BOLD, 27));
+		txtInput.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		txtInput.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtInput.setText("0");
 		blAppend = false;

@@ -22,6 +22,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
 import java.awt.Cursor;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.SwingConstants;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.GridLayout;
+import java.awt.CardLayout;
 
 public class showAboutJava extends JDialog {
 
@@ -38,24 +45,24 @@ public class showAboutJava extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
-			JLabel lblNewLabel = new JLabel("");
-			lblNewLabel.setIcon(new ImageIcon(".\\imgs\\javalogo.png"));
-			lblNewLabel.setBounds(10, 11, 476, 212);
-			contentPanel.add(lblNewLabel);
+			JLabel lblIconJava = new JLabel("");
+			lblIconJava.setIcon(new ImageIcon(".\\imgs\\javalogo.png"));
+			lblIconJava.setBounds(10, 11, 476, 212);
+			contentPanel.add(lblIconJava);
 		}
 		{
 			JScrollPane scrollPane = new JScrollPane();
 			scrollPane.setBounds(10, 234, 477, 207);
 			contentPanel.add(scrollPane);
 			{
-				JEditorPane dtrpnJavaIsA = new JEditorPane();
-				dtrpnJavaIsA.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-				dtrpnJavaIsA.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-				dtrpnJavaIsA.setAlignmentX(Component.RIGHT_ALIGNMENT);
-				dtrpnJavaIsA.setFocusTraversalKeysEnabled(false);
-				dtrpnJavaIsA.setFocusCycleRoot(false);
-				dtrpnJavaIsA.setFont(new Font("Tahoma", Font.PLAIN, 12));
-				dtrpnJavaIsA.setEditable(false);
+				JEditorPane txtAboutJava = new JEditorPane();
+				txtAboutJava.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+				txtAboutJava.setAlignmentY(Component.TOP_ALIGNMENT);
+				txtAboutJava.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				txtAboutJava.setFocusTraversalKeysEnabled(false);
+				txtAboutJava.setFocusCycleRoot(false);
+				txtAboutJava.setFont(new Font("Tahoma", Font.PLAIN, 12));
+				txtAboutJava.setEditable(false);
 				String strContent = "";
 				try {
 					Scanner reader = new Scanner(new File("./text/AboutJava.txt"));
@@ -66,25 +73,34 @@ public class showAboutJava extends JDialog {
 				} catch (FileNotFoundException e) {
 					JOptionPane.showMessageDialog(null, "ERROR! AboutJava.txt not found");
 				}
-				dtrpnJavaIsA.setText(strContent);
-				scrollPane.setViewportView(dtrpnJavaIsA);
+				txtAboutJava.setText(strContent);
+				scrollPane.setViewportView(txtAboutJava);
 			}
 		}
 		{
 			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			buttonPane.setBounds(10, 452, 477, 23);
+			contentPanel.add(buttonPane);
+			buttonPane.setLayout(null);
 			{
-				JButton okButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						
-					}
-				});
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				
+				JLabel lblAuthor = new JLabel("Author: Vinh - T151487");
+				lblAuthor.setHorizontalAlignment(SwingConstants.CENTER);
+				lblAuthor.setFont(new Font("Arial", Font.BOLD, 12));
+				lblAuthor.setBounds(0, 3, 154, 23);
+				lblAuthor.setVerticalAlignment(SwingConstants.TOP);
+				buttonPane.add(lblAuthor);
 			}
+			JButton okButton = new JButton("OK");
+			okButton.setBounds(418, 0, 59, 23);
+			okButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					dispose();
+				}
+			});
+			okButton.setActionCommand("OK");
+			buttonPane.add(okButton);
+			getRootPane().setDefaultButton(okButton);
 		}
 	}
 }
