@@ -1,3 +1,4 @@
+package homework;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -152,8 +153,92 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		btnStandards[5][2].setLocation((w + d) * 3, ySta - h - d);
 		btnStandards[5][3].setVisible(false);
 		btnStandards[5][4].setVisible(false);
+		panStandardFunction();
 
+		//Scientific Panel here
+		panScientific.setLayout(null);
+		ySci = 0;
+		for (int i = 0; i < 5; i++) {
+			xSci = 0;
+			for (int j = 0; j < 5; j++) {
+				btnScientific[i][j] = new JButton(sSci[i][j]);
+				panScientific.add(btnScientific[i][j]);
+				btnScientific[i][j].setBounds(xSci, ySci, w, h);
+				btnScientific[i][j].setMargin(isMargin);
+				xSci = xSci + w + d;
+			}
+			ySci = ySci + h + d;
+		}
+		this.add(panScientific);
+		//Panel angle
+		btgAngle.add(optDegrees);
+		optDegrees.setSelected(true);
+		btgAngle.add(optRadians);
+		btgAngle.add(optGrads);
+		panAngleUnits.add(optDegrees, BorderLayout.WEST);
+		panAngleUnits.add(optRadians, BorderLayout.CENTER);
+		panAngleUnits.add(optGrads, BorderLayout.EAST);
+		this.add(panAngleUnits);
+		
+		
+		//Programmer Panel here
+		//Panel convert Dec Hex Bin Oct
+		btgconvertNum.add(optDec);
+		optDec.setSelected(true);
+		btgconvertNum.add(optHex);
+		btgconvertNum.add(optOct);
+		btgconvertNum.add(optBin);
+		pancvNum.add(optHex);
+		pancvNum.add(optDec);
+		pancvNum.add(optOct );
+		pancvNum.add(optBin);
+		pancvNum.setLayout(new GridLayout(4,1));
+		this.add(pancvNum);
+		//Panel word...
+		btgWord.add(optQword);
+		optQword.setSelected(true);
+		btgWord.add(optDword);
+		btgWord.add(optWord);
+		btgWord.add(optByte);
+		panWord.add(optQword);
+		panWord.add(optDword);
+		panWord.add(optWord);
+		panWord.add(optByte);
+		panWord.setLayout(new GridLayout(4,1));
+		
+		this.add(panWord);
+		
+		panPro.setLayout(null);
+		for (int i = 0; i < 6; i++) {
+			xPro = 0;
+			for (int j = 0; j < 3; j++) {
+				btnPro[i][j] = new JButton(sPro[i][j]);
+				panPro.add(btnPro[i][j]);
+				btnPro[i][j].setBounds(xPro, yPro, w, h);
+				btnPro[i][j].setMargin(isMargin);
+				xPro = xPro + w + d;
+			}
+			yPro = yPro + h + d;
+		}
+		this.add(panPro);
+		
+		panProgrammerFunction();
+	}
 
+	// Input number var
+	boolean blAppend = false;
+	// Calculating var
+	double cResult = 0;
+	String sCal = "", number = "";
+	boolean addCal = false;
+	// Equal var
+	double eq = 0;
+	boolean firstEqual = true;
+	double eqTmp = 0;
+	// btnM var
+	double MS = 0;
+	
+	private void panStandardFunction(){
 		// Actionlistener
 		ActionListener num = new ActionListener() {
 
@@ -185,29 +270,32 @@ public class cHW01_Calculator_T151487 extends JFrame {
 						addCal = true;
 						
 						//Adding formula
-						setFml(txtInput.getText() + " " +btnCal.getText());
+						if(!btnCal.getText().equals("+/-")){
+							setFml(txtInput.getText() + " " +btnCal.getText());
+						}
 					}
 					else{
-						
 						if(!number.isEmpty()){
 							calcualting();
 							setsCal(btnCal.getText());
 							//set formula
-							setFml(getFml() +" " + number + " "+ btnCal.getText());
+							if(!btnCal.getText().equals("+/-")){
+								setFml(getFml() +" " + number + " "+ btnCal.getText());
+							}
 						}
 						else{
 							setsCal(btnCal.getText());
 							//set formula
-							setFml(getFml().substring(0, getFml().length()-1));
-							setFml(getFml() + btnCal.getText());
+							if(!btnCal.getText().equals("+/-")){
+								setFml(getFml().substring(0, getFml().length()-1));
+								setFml(getFml() + btnCal.getText());
+							}
 						}
-						
-						
 					}
 				}
 				
 				number = "";
-				firstEq = true;
+				firstEqual = true;
 				blAppend = false;
 				setFmlTxtArea();
 				
@@ -251,7 +339,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				number = "";
 				addCal = false;
 				eq = 0;
-				firstEq = false;
+				firstEqual = false;
 				eqTmp = 0;
 				if(optBin.isSelected()){
 					setStageConvertNum(1);
@@ -348,73 +436,9 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				}
 			}
 		});*/
-		
-		//Scientific Panel here
-		panScientific.setLayout(null);
-		ySci = 0;
-		for (int i = 0; i < 5; i++) {
-			xSci = 0;
-			for (int j = 0; j < 5; j++) {
-				btnScientific[i][j] = new JButton(sSci[i][j]);
-				panScientific.add(btnScientific[i][j]);
-				btnScientific[i][j].setBounds(xSci, ySci, w, h);
-				btnScientific[i][j].setMargin(isMargin);
-				xSci = xSci + w + d;
-			}
-			ySci = ySci + h + d;
-		}
-		this.add(panScientific);
-		//Panel angle
-		btgAngle.add(optDegrees);
-		optDegrees.setSelected(true);
-		btgAngle.add(optRadians);
-		btgAngle.add(optGrads);
-		panAngleUnits.add(optDegrees, BorderLayout.WEST);
-		panAngleUnits.add(optRadians, BorderLayout.CENTER);
-		panAngleUnits.add(optGrads, BorderLayout.EAST);
-		this.add(panAngleUnits);
-		
-		
-		//Programmer Panel here
-		//Panel convert Dec Hex Bin Oct
-		btgconvertNum.add(optDec);
-		optDec.setSelected(true);
-		btgconvertNum.add(optHex);
-		btgconvertNum.add(optOct);
-		btgconvertNum.add(optBin);
-		pancvNum.add(optHex);
-		pancvNum.add(optDec);
-		pancvNum.add(optOct );
-		pancvNum.add(optBin);
-		pancvNum.setLayout(new GridLayout(4,1));
-		this.add(pancvNum);
-		//Panel word...
-		btgWord.add(optQword);
-		optQword.setSelected(true);
-		btgWord.add(optDword);
-		btgWord.add(optWord);
-		btgWord.add(optByte);
-		panWord.add(optQword);
-		panWord.add(optDword);
-		panWord.add(optWord);
-		panWord.add(optByte);
-		panWord.setLayout(new GridLayout(4,1));
-		
-		this.add(panWord);
-		
-		panPro.setLayout(null);
-		for (int i = 0; i < 6; i++) {
-			xPro = 0;
-			for (int j = 0; j < 3; j++) {
-				btnPro[i][j] = new JButton(sPro[i][j]);
-				panPro.add(btnPro[i][j]);
-				btnPro[i][j].setBounds(xPro, yPro, w, h);
-				btnPro[i][j].setMargin(isMargin);
-				xPro = xPro + w + d;
-			}
-			yPro = yPro + h + d;
-		}
-		this.add(panPro);
+	}
+	
+	private void panProgrammerFunction(){
 		//Actionlistener for HEX
 		ActionListener actProHEX = new ActionListener() {
 			
@@ -471,7 +495,8 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 				blAppend = false;
 				txtInput.setText(output);		
-				setDisplayButton(getStageConvertNum());
+				setDisplayButtonPanelProgrammer(getStageConvertNum());
+				disableSomeButton(3);
 			}
 		};
 		optBin.addActionListener(optConvertNum);
@@ -573,23 +598,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		optDword.addActionListener(actW);
 		optWord.addActionListener(actW);
 		optByte.addActionListener(actW);
-		
-		
-		
 	}
-
-	// Input number var
-	boolean blAppend = false;
-	// Calculating var
-	double cResult = 0;
-	String sCal = "", number = "";
-	boolean addCal = false;
-	// Equal var
-	double eq = 0;
-	boolean firstEq = true;
-	double eqTmp = 0;
-	// btnM var
-	double MS = 0;
 	
 	private void pressNumber(String snum) {
 		number = snum;
@@ -647,7 +656,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		String sOper = getsCal();
 		String s = txtInput.getText();
 		
-		if(firstEq){
+		if(firstEqual){
 			
 			eqTmp = Double.parseDouble(s);
 			if (sOper.equals("+")) {
@@ -670,7 +679,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			System.out.println(arrFml[arrFmlCount]);
 			
 			//
-			firstEq = false;
+			firstEqual = false;
 			
 		}
 		else{
@@ -773,7 +782,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	}
 	
 	
-	private void setDisplayButton(int stage){
+	private void setDisplayButtonPanelProgrammer(int stage){
 		//set Enable button first
 		for(int i = 0 ; i < 6 ; i++){
 			for(int j = 0 ; j < 3 ; j++){
@@ -1183,7 +1192,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			
 			//set StageNum 
 			this.StageNum = 3;
-			setDisplayButton(getStageConvertNum());
+			setDisplayButtonPanelProgrammer(getStageConvertNum());
 			
 			//set empty strCopyPaste
 			strCopyPaste = "";
@@ -1202,6 +1211,33 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		txtInput.setText("0");
 		blAppend = false;
 		
+		disableSomeButton(mode);
+	}
+	
+	//added Requirement
+	private void disableSomeButton(int mode){
+		if(mode == 2){
+			btnScientific[0][0].setEnabled(false);
+			btnScientific[1][0].setEnabled(false);
+			btnScientific[2][0].setEnabled(false);
+			btnScientific[4][0].setEnabled(false);
+			for(int i = 0; i < 5 ; i++){
+				btnScientific[i][1].setEnabled(false);
+			}
+			btnScientific[0][3].setEnabled(false);
+			btnScientific[0][4].setEnabled(false);
+			optGrads.setEnabled(false);
+		}
+		else if(mode == 3){
+			btnPro[0][0].setEnabled(false);
+			btnPro[1][0].setEnabled(false);
+			btnPro[1][1].setEnabled(false);
+			btnPro[3][0].setEnabled(false);
+			btnPro[3][1].setEnabled(false);
+			btnPro[4][0].setEnabled(false);
+			btnPro[4][1].setEnabled(false);
+			
+		}
 	}
 	
 	/**

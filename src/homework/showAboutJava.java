@@ -1,34 +1,31 @@
+package homework;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
+
 import java.awt.TextArea;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JEditorPane;
-import javax.swing.DropMode;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
 import java.awt.Cursor;
-import net.miginfocom.swing.MigLayout;
+
 import javax.swing.SwingConstants;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.GridLayout;
-import java.awt.CardLayout;
 
 public class showAboutJava extends JDialog {
 
@@ -39,7 +36,7 @@ public class showAboutJava extends JDialog {
 	 * Create the dialog.
 	 */
 	public showAboutJava() {
-		setBounds(100, 100, 513, 524);
+		setBounds(100, 100, 530, 524);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -51,11 +48,13 @@ public class showAboutJava extends JDialog {
 			contentPanel.add(lblIconJava);
 		}
 		{
-			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 234, 477, 207);
+			JTextArea txtAboutJava = new JTextArea();
+			txtAboutJava.setLineWrap(true);
+			txtAboutJava.setWrapStyleWord(true);
+			JScrollPane scrollPane = new JScrollPane(txtAboutJava);
+			scrollPane.setBounds(10, 234, 490, 207);
 			contentPanel.add(scrollPane);
 			{
-				JEditorPane txtAboutJava = new JEditorPane();
 				txtAboutJava.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 				txtAboutJava.setAlignmentY(Component.TOP_ALIGNMENT);
 				txtAboutJava.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -74,7 +73,7 @@ public class showAboutJava extends JDialog {
 					JOptionPane.showMessageDialog(null, "ERROR! AboutJava.txt not found");
 				}
 				txtAboutJava.setText(strContent);
-				scrollPane.setViewportView(txtAboutJava);
+				txtAboutJava.setCaretPosition(0);
 			}
 		}
 		{
