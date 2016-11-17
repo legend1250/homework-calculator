@@ -18,7 +18,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -44,6 +43,10 @@ import javax.swing.border.EtchedBorder;
  */
 public class cHW01_Calculator_T151487 extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5102139270509496121L;
 	JTextArea txtFormula = new JTextArea();
 	JTextField txtInput = new JTextField();
 	int y0 = 150; // panel start from this y0
@@ -72,7 +75,8 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			{ "7", "8", "9", "/", "%" },
 			{ "4", "5", "6", "*", "1/x" }, 
 			{ "1", "2", "3", "-", "=" },
-			{ "0", ".", "+", "", "" }, };
+			{ "0", ".", "+", "", "" }, 
+			};
 
 	JButton[][] btnStandards = new JButton[6][5];
 	JPanel panStandards = new JPanel();
@@ -1149,7 +1153,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			panScientific.setBounds(10, y0 + h + d , xSci, ySci + h);
 			
 			//disable some button
-			btnStandards[2][4].setEnabled(false);
 			panWord.setVisible(false);
 			pancvNum.setVisible(false);
 			panPro.setVisible(false);
@@ -1185,7 +1188,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			panScientific.setVisible(false);
 			
 			//disable some button
-			for(int i = 1 ; i < 4 ; i++){
+			for(int i = 1 ; i <= 3 ; i++){
 				btnStandards[i][4].setEnabled(false);
 			}
 			btnStandards[5][1].setEnabled(false);
@@ -1206,12 +1209,24 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		txtFormula.setEditable(false);
 		txtInput.setBounds(10, y1 + heightFml+10, this.getWidth() - 30, heightInput);
 		txtInput.setEditable(false);
-		txtInput.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		txtInput.setFont(new Font("ROMAN_BASELINE", Font.PLAIN, 22));
 		txtInput.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtInput.setText("0");
 		blAppend = false;
 		
+		enableSomeButton(mode);
+		//added Requirement
 		disableSomeButton(mode);
+	}
+	
+	//some this button is disable when choose Programmer mode so it will be enable when Programmer mode is not choosed
+	private void enableSomeButton(int mode){
+		if ( mode == 1 || mode == 2){
+			for(int i = 1 ; i <= 3 ; i++){
+				btnStandards[i][4].setEnabled(true);
+			}
+			btnStandards[5][1].setEnabled(true);
+		}
 	}
 	
 	//added Requirement
@@ -1238,6 +1253,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			btnPro[4][1].setEnabled(false);
 			
 		}
+		btnStandards[2][4].setEnabled(false);
 	}
 	
 	/**
@@ -1255,9 +1271,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			mni.setIcon(icon);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			System.out.println(mni.getText() + " can't find image resource");
+			JOptionPane.showMessageDialog(null, mni.getText() + " can't find image resource");
 		}
 	}
 
