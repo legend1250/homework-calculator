@@ -157,7 +157,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		btnStandards[5][2].setLocation((w + d) * 3, ySta - h - d);
 		btnStandards[5][3].setVisible(false);
 		btnStandards[5][4].setVisible(false);
-		panStandardFunction();
+		
 
 		//Scientific Panel here
 		panScientific.setLayout(null);
@@ -183,6 +183,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		panAngleUnits.add(optRadians, BorderLayout.CENTER);
 		panAngleUnits.add(optGrads, BorderLayout.EAST);
 		this.add(panAngleUnits);
+		//function
 		
 		
 		//Programmer Panel here
@@ -226,6 +227,9 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		}
 		this.add(panPro);
 		
+		
+		panStandardFunction();
+		panScientificFunction();
 		panProgrammerFunction();
 	}
 
@@ -275,24 +279,50 @@ public class cHW01_Calculator_T151487 extends JFrame {
 						
 						//Adding formula
 						if(!btnCal.getText().equals("+/-")){
-							setFml(txtInput.getText() + " " +btnCal.getText());
+							if(btnCal.getText().equals("x^y")){
+								setFml(txtInput.getText() + " " + " ^ ");
+							}
+							else if (btnCal.getText().equals("x^1/y")){
+								setFml(txtInput.getText() + " " + " yroot ");
+							}
+							else{
+								setFml(txtInput.getText() + " " +btnCal.getText());
+							}
 						}
 					}
 					else{
 						if(!number.isEmpty()){
-							calcualting();
+							calculating();
 							setsCal(btnCal.getText());
 							//set formula
-							if(!btnCal.getText().equals("+/-")){
-								setFml(getFml() +" " + number + " "+ btnCal.getText());
+							if(!btnCal.getText().equals("+/-") ){
+								if(btnCal.getText().equals("x^y")){
+									setFml(getFml() + " " + number + " " + " ^ ");
+								}
+								else if (btnCal.getText().equals("x^1/y")){
+									setFml(getFml() + " " + number + " " + " yroot ");
+								}
+								else{
+									setFml(getFml() + " " + number + " "+ btnCal.getText());
+								}
 							}
 						}
 						else{
 							setsCal(btnCal.getText());
 							//set formula
 							if(!btnCal.getText().equals("+/-")){
-								setFml(getFml().substring(0, getFml().length()-1));
-								setFml(getFml() + btnCal.getText());
+								if(btnCal.getText().equals("x^y")){
+									setFml(getFml().substring(0, getFml().length()-3));
+									setFml(getFml() + " ^ ");
+								}
+								else if (btnCal.getText().equals("x^1/y")){
+									setFml(getFml().substring(0, getFml().length()-7));
+									setFml(getFml() + " yroot ");
+								}
+								else{
+									setFml(getFml().substring(0, getFml().length()-1));
+									setFml(getFml() + btnCal.getText());
+								}
 							}
 						}
 					}
@@ -310,7 +340,11 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			btnStandards[i][3].addActionListener(cal);
 		}
 		btnStandards[5][2].addActionListener(cal);
-
+		//btn from Scientific
+		btnScientific[4][2].addActionListener(cal); //btn Mod
+		btnScientific[2][3].addActionListener(cal); //btn x^y
+		btnScientific[2][4].addActionListener(cal); //btn x^1/y
+		
 		
 		// btn Equal
 		btnStandards[4][4].addActionListener(new ActionListener() {
@@ -441,6 +475,121 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			}
 		});*/
 	}
+	
+	//new function implements on November 17th 
+	
+	private void panScientificFunction(){
+		
+		ActionListener actionScientific = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JButton btnSci = (JButton) arg0.getSource();
+				//button PI
+				if(btnSci.equals(btnScientific[3][0])){
+					txtInput.setText(String.valueOf(Math.PI));
+				}
+				//button log-nepe
+				else if(btnSci.equals(btnScientific[0][2])){
+					double x = Double.parseDouble(txtInput.getText());
+					cResult = Math.log(x);
+					txtInput.setText(String.valueOf(cResult));
+					
+				}
+				//button x^2
+				else if(btnSci.equals(btnScientific[1][3])){
+					double x = Double.parseDouble(txtInput.getText());
+					cResult = Math.pow(x, 2);
+					txtInput.setText(String.valueOf(cResult));
+					
+				}
+				//button x^3
+				else if(btnSci.equals(btnScientific[3][3])){
+					double x = Double.parseDouble(txtInput.getText());
+					cResult = Math.pow(x, 3);
+					txtInput.setText(String.valueOf(cResult));
+				}
+				//button factorial
+				//FIXME java.lang.StackOverflowError bug
+				else if(btnSci.equals(btnScientific[1][4])){
+					try {
+						cResult = factorial(Double.parseDouble(txtInput.getText()));
+						txtInput.setText(String.valueOf(cResult));
+					} catch (StackOverflowError e) {
+						e.printStackTrace();
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}
+				//button sqrt 3
+				else if(btnSci.equals(btnScientific[3][4])){
+					double x = Double.parseDouble(txtInput.getText());
+					cResult = Math.pow(x, (double) 1/3);
+					txtInput.setText(String.valueOf(cResult));
+				}
+				//button log
+				else if(btnSci.equals(btnScientific[4][3])){
+					double x = Double.parseDouble(txtInput.getText());
+					cResult = Math.log10(x);
+					txtInput.setText(String.valueOf(cResult));
+				}
+				//button 10^x
+				else if(btnSci.equals(btnScientific[4][4])){
+					double x = Double.parseDouble(txtInput.getText());
+					cResult = Math.pow(10, x);
+					txtInput.setText(String.valueOf(cResult));
+				}
+				//button sin/cos/tan
+				else if(btnSci.equals(btnScientific[1][2]) || btnSci.equals(btnScientific[2][2]) || btnSci.equals(btnScientific[3][2])){
+					String sOper = btnSci.getText();
+					String sInput = txtInput.getText();
+					cResult = luonggiac(sOper,sInput);
+					txtInput.setText(String.valueOf(cResult));
+				}
+			}
+		};
+		
+		btnScientific[3][0].addActionListener(actionScientific);
+		btnScientific[0][2].addActionListener(actionScientific);
+		btnScientific[1][3].addActionListener(actionScientific);
+		btnScientific[3][3].addActionListener(actionScientific);
+		btnScientific[1][4].addActionListener(actionScientific);
+		btnScientific[3][4].addActionListener(actionScientific);
+		btnScientific[4][3].addActionListener(actionScientific);
+		btnScientific[4][4].addActionListener(actionScientific);
+		btnScientific[1][2].addActionListener(actionScientific);
+		btnScientific[2][2].addActionListener(actionScientific);
+		btnScientific[3][2].addActionListener(actionScientific);
+		
+	}
+	
+	private double factorial(double n){
+		if(n==1){
+			return 1;
+		}
+		else{
+			return n * factorial(n-1);
+		}
+	}
+	
+	private double luonggiac(String sOper, String sInput){
+		double x = Double.parseDouble(sInput);
+		if(optDegrees.isSelected()){
+			x = Math.toRadians(x);
+		}
+		
+		double result=0;
+		if(sOper.equals("sin")){
+			result = Math.sin(x);
+		}
+		else if(sOper.equals("cos")){
+			result = Math.cos(x);
+		}
+		else if(sOper.equals("tan")){
+			result = Math.tan(x);
+		}	
+		return result;
+	}
+	
 	
 	private void panProgrammerFunction(){
 		//Actionlistener for HEX
@@ -637,22 +786,34 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		}
 	}
 	
-	private void calcualting() {
+	private void calculating() {
 		String sOper = getsCal();
 		if (sOper.equals("+")) {
 			cResult += Double.parseDouble(txtInput.getText());
-			txtInput.setText(cResult + "");
+			txtInput.setText(String.valueOf(cResult));
 		} else if (sOper.equals("-")) {
 			cResult -= Double.parseDouble(txtInput.getText());
-			txtInput.setText(cResult + "");
+			txtInput.setText(String.valueOf(cResult));
 		} else if (sOper.equals("*")) {
 			cResult *= Double.parseDouble(txtInput.getText());
-			txtInput.setText(cResult + "");
+			txtInput.setText(String.valueOf(cResult));
 		} else if (sOper.equals("/")) {
 			cResult /= Double.parseDouble(txtInput.getText());
-			txtInput.setText(cResult + "");
+			txtInput.setText(String.valueOf(cResult));
 		}
-		
+		//btn from Scientific
+		else if (sOper.equals("Mod")){
+			cResult %= Double.parseDouble(txtInput.getText());
+			txtInput.setText(String.valueOf(cResult));
+		}
+		else if (sOper.equals("x^y")){
+			cResult = Math.pow(cResult, Double.parseDouble(txtInput.getText()));
+			txtInput.setText(String.valueOf(cResult));
+		}
+		else if (sOper.equals("x^1/y")){
+			cResult = Math.pow(cResult, (double) 1/Double.parseDouble(txtInput.getText()));
+			txtInput.setText(String.valueOf(cResult));
+		}
 		setCurrentResult(cResult);
 	}
 
@@ -665,16 +826,29 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			eqTmp = Double.parseDouble(s);
 			if (sOper.equals("+")) {
 				cResult += Double.parseDouble(txtInput.getText());
-				txtInput.setText(cResult + "");
+				txtInput.setText(String.valueOf(cResult));
 			} else if (sOper.equals("-")) {
 				cResult -= Double.parseDouble(txtInput.getText());
-				txtInput.setText(cResult + "");
+				txtInput.setText(String.valueOf(cResult));
 			} else if (sOper.equals("*")) {
 				cResult *= Double.parseDouble(txtInput.getText());
-				txtInput.setText(cResult + "");
+				txtInput.setText(String.valueOf(cResult));
 			} else if (sOper.equals("/")) {
 				cResult /= Double.parseDouble(txtInput.getText());
-				txtInput.setText(cResult + "");
+				txtInput.setText(String.valueOf(cResult));
+			}
+			//button from Scientific
+			else if (sOper.equals("Mod")){
+				cResult %= Double.parseDouble(txtInput.getText());
+				txtInput.setText(String.valueOf(cResult));
+			}
+			else if (sOper.equals("x^y")){
+				cResult = Math.pow(cResult, Double.parseDouble(txtInput.getText()));
+				txtInput.setText(String.valueOf(cResult));
+			}
+			else if (sOper.equals("x^1/y")){
+				cResult = Math.pow(cResult, (double) 1/Double.parseDouble(txtInput.getText()));
+				txtInput.setText(String.valueOf(cResult));
 			}
 			setCurrentResult(cResult);
 			
@@ -690,16 +864,29 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			if(!blAppend){
 				if (sOper.equals("+")) {
 					cResult += eqTmp;
-					txtInput.setText(cResult + "");
+					txtInput.setText(String.valueOf(cResult));
 				} else if (sOper.equals("-")) {
 					cResult -= eqTmp;
-					txtInput.setText(cResult + "");
+					txtInput.setText(String.valueOf(cResult));
 				} else if (sOper.equals("*")) {
 					cResult *= eqTmp;
-					txtInput.setText(cResult + "");
+					txtInput.setText(String.valueOf(cResult));
 				} else if (sOper.equals("/")) {
 					cResult /= eqTmp;
-					txtInput.setText(cResult + "");
+					txtInput.setText(String.valueOf(cResult));
+				}
+				//button from Scientific
+				else if (sOper.equals("Mod")){
+					cResult %= eqTmp;
+					txtInput.setText(String.valueOf(cResult));
+				}
+				else if (sOper.equals("x^y")){
+					cResult = Math.pow(cResult, eqTmp);
+					txtInput.setText(String.valueOf(cResult));
+				}
+				else if (sOper.equals("x^1/y")){
+					cResult = Math.pow(cResult, (double) 1/eqTmp);
+					txtInput.setText(String.valueOf(cResult));
 				}
 				setCurrentResult(cResult);
 				
@@ -713,16 +900,29 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				String sTmpInput = txtInput.getText();
 				if (sOper.equals("+")) {
 					cResult += Double.parseDouble(txtInput.getText());
-					txtInput.setText(cResult + "");
+					txtInput.setText(String.valueOf(cResult));
 				} else if (sOper.equals("-")) {
 					cResult -= Double.parseDouble(txtInput.getText());
-					txtInput.setText(cResult + "");
+					txtInput.setText(String.valueOf(cResult));
 				} else if (sOper.equals("*")) {
 					cResult *= Double.parseDouble(txtInput.getText());
-					txtInput.setText(cResult + "");
+					txtInput.setText(String.valueOf(cResult));
 				} else if (sOper.equals("/")) {
 					cResult /= Double.parseDouble(txtInput.getText());
-					txtInput.setText(cResult + "");
+					txtInput.setText(String.valueOf(cResult));
+				}
+				//button from Scientific
+				else if (sOper.equals("Mod")){
+					cResult %= Double.parseDouble(txtInput.getText());
+					txtInput.setText(String.valueOf(cResult));
+				}
+				else if (sOper.equals("x^y")){
+					cResult = Math.pow(cResult, Double.parseDouble(txtInput.getText()));
+					txtInput.setText(String.valueOf(cResult));
+				}
+				else if (sOper.equals("x^1/y")){
+					cResult = Math.pow(cResult, (double) 1/Double.parseDouble(txtInput.getText()));
+					txtInput.setText(String.valueOf(cResult));
 				}
 				setCurrentResult(cResult);
 				
@@ -1283,6 +1483,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		cHW01_Calculator_T151487 f = new cHW01_Calculator_T151487();
 		f.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		f.setVisible(true);
+		
 	}
 
 }
