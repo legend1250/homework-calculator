@@ -754,14 +754,31 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	}
 	
 	private void pressNumber(String snum) {
-		number = snum;
+		
 		if (blAppend) {
-			number = txtInput.getText() + number;
-			txtInput.setText(number);
-		} else {
-			if(!number.equals("0")){
+			if(number.endsWith(".")){
+				if(!snum.equals(".")){
+					number = txtInput.getText() + snum;
+					txtInput.setText(number);
+				}
+			}
+			else{
+				number = txtInput.getText() + snum;
 				txtInput.setText(number);
-				blAppend = true;
+			}
+		} else {
+			if(!snum.equals("0")){
+				if(snum.equals(".")){
+					number = "0" + snum;
+					txtInput.setText(number);
+					blAppend = true;
+				}
+				else{
+					number = snum;
+					txtInput.setText(number);
+					blAppend = true;
+				}
+				
 			}
 		}
 		
