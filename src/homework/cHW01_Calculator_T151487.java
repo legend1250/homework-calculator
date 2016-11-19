@@ -2,6 +2,7 @@ package homework;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -139,11 +141,18 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		panStandards.setLayout(null);
 		Insets isMargin = new Insets(1, 1, 1, 1);
 		ySta = 0;
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.gridx = 0;
+	    constraints.gridy = 2;
+	    constraints.gridwidth = 2;
+	    constraints.anchor = GridBagConstraints.CENTER;
+	    
 		for (int i = 0; i < 6; i++) {
 			xSta = 0;
 			for (int j = 0; j < 5; j++) {
 				btnStandards[i][j] = new JButton(sStandard[i][j]);
-				panStandards.add(btnStandards[i][j]);
+				panStandards.add(btnStandards[i][j],constraints);
 				btnStandards[i][j].setBounds(xSta, ySta, w, h);
 				btnStandards[i][j].setMargin(isMargin);
 				xSta = xSta + w + d;
@@ -474,6 +483,25 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				}
 			}
 		});*/
+		
+		//button <-
+		btnStandards[1][0].addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(blAppend){
+					if(number.length()>1){
+						number = number.substring(0, number.length()-1);
+						txtInput.setText(number);
+					}
+					else if(number.length() == 1){
+						number = "0";
+						txtInput.setText(number);
+						blAppend = false;
+					}
+				}
+			}
+		});
 	}
 	
 	//new function implements on November 17th 
@@ -519,8 +547,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 						txtInput.setText(String.valueOf(cResult));
 						blAppend = false;
 					} catch (StackOverflowError e) {
-						e.printStackTrace();
-						JOptionPane.showMessageDialog(null, e.getMessage());
+						JOptionPane.showMessageDialog(null, "Invalid input! Only support for Positive Integer");
 					}
 				}
 				//button sqrt 3
@@ -570,7 +597,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	}
 	
 	private double factorial(double n){
-		if(n==1){
+		if(n ==1 || n==0){
 			return 1;
 		}
 		else{
@@ -593,7 +620,12 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		}
 		else if(sOper.equals("tan")){
 			result = Math.tan(x);
-		}	
+		}
+		
+		DecimalFormat df = new DecimalFormat(".###############");
+		String strResult= df.format(result);
+		result = Double.parseDouble(strResult);
+		
 		return result;
 	}
 	
@@ -763,7 +795,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	private void pressNumber(String snum) {
 		
 		if (blAppend) {
-			if(number.endsWith(".")){
+			if(number.endsWith(".") || number.indexOf(".")>0){
 				if(!snum.equals(".")){
 					number = txtInput.getText() + snum;
 					txtInput.setText(number);
