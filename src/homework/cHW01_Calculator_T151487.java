@@ -141,18 +141,11 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		panStandards.setLayout(null);
 		Insets isMargin = new Insets(1, 1, 1, 1);
 		ySta = 0;
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridx = 0;
-	    constraints.gridy = 2;
-	    constraints.gridwidth = 2;
-	    constraints.anchor = GridBagConstraints.CENTER;
-	    
 		for (int i = 0; i < 6; i++) {
 			xSta = 0;
 			for (int j = 0; j < 5; j++) {
 				btnStandards[i][j] = new JButton(sStandard[i][j]);
-				panStandards.add(btnStandards[i][j],constraints);
+				panStandards.add(btnStandards[i][j]);
 				btnStandards[i][j].setBounds(xSta, ySta, w, h);
 				btnStandards[i][j].setMargin(isMargin);
 				xSta = xSta + w + d;
