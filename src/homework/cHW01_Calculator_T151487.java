@@ -488,6 +488,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 				//button PI
 				if(btnSci.equals(btnScientific[3][0])){
 					txtInput.setText(String.valueOf(Math.PI));
+					blAppend = false;
 				}
 				//button log-nepe
 				else if(btnSci.equals(btnScientific[0][2])){
@@ -501,13 +502,14 @@ public class cHW01_Calculator_T151487 extends JFrame {
 					double x = Double.parseDouble(txtInput.getText());
 					cResult = Math.pow(x, 2);
 					txtInput.setText(String.valueOf(cResult));
-					
+					blAppend = false;
 				}
 				//button x^3
 				else if(btnSci.equals(btnScientific[3][3])){
 					double x = Double.parseDouble(txtInput.getText());
 					cResult = Math.pow(x, 3);
 					txtInput.setText(String.valueOf(cResult));
+					blAppend = false;
 				}
 				//button factorial
 				//FIXME java.lang.StackOverflowError bug
@@ -515,6 +517,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 					try {
 						cResult = factorial(Double.parseDouble(txtInput.getText()));
 						txtInput.setText(String.valueOf(cResult));
+						blAppend = false;
 					} catch (StackOverflowError e) {
 						e.printStackTrace();
 						JOptionPane.showMessageDialog(null, e.getMessage());
@@ -525,24 +528,28 @@ public class cHW01_Calculator_T151487 extends JFrame {
 					double x = Double.parseDouble(txtInput.getText());
 					cResult = Math.pow(x, (double) 1/3);
 					txtInput.setText(String.valueOf(cResult));
+					blAppend = false;
 				}
 				//button log
 				else if(btnSci.equals(btnScientific[4][3])){
 					double x = Double.parseDouble(txtInput.getText());
 					cResult = Math.log10(x);
 					txtInput.setText(String.valueOf(cResult));
+					blAppend = false;
 				}
 				//button 10^x
 				else if(btnSci.equals(btnScientific[4][4])){
 					double x = Double.parseDouble(txtInput.getText());
 					cResult = Math.pow(10, x);
 					txtInput.setText(String.valueOf(cResult));
+					blAppend = false;
 				}
 				//button sin/cos/tan
 				else if(btnSci.equals(btnScientific[1][2]) || btnSci.equals(btnScientific[2][2]) || btnSci.equals(btnScientific[3][2])){
 					String sOper = btnSci.getText();
 					String sInput = txtInput.getText();
 					cResult = luonggiac(sOper,sInput);
+					blAppend = false;
 					txtInput.setText(String.valueOf(cResult));
 				}
 			}
