@@ -1,6 +1,5 @@
 package homework;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -11,13 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
-import java.awt.TextArea;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import javax.swing.JScrollPane;
-import javax.swing.JEditorPane;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -29,6 +26,10 @@ import javax.swing.SwingConstants;
 
 public class showAboutJava extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1259525176780727374L;
 	private final JPanel contentPanel = new JPanel();
 
 

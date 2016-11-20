@@ -2,7 +2,6 @@ package homework;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
@@ -11,10 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -31,7 +28,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
 /**
@@ -55,9 +52,14 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	int y1 = 10, heightInput = 35, heightFml = 65;
 
 	public cHW01_Calculator_T151487() {
-		setTitle("Calculator");
+		setTitle("T151487 - Calculator");
 		setSize(500, 500);
 		this.setLayout(null);
+		try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 		initMenu();
 		initComponent();
 		displayMode(1);
@@ -66,9 +68,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		//
 		add(txtFormula);
 		add(txtInput);
-		//
-		
-		this.add(panStandards);
 	}
 
 	String[][] sStandard = { 
@@ -86,6 +85,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	int w = 40, h = 40, d = 10;
 	int xSta = 0, ySta = 0;
 	
+	private String strCopyPaste = "";
 	//Scientific
 	String [][] sSci = {
 			{ "" , "lnv" , "ln" , "(", ")" },
@@ -135,11 +135,13 @@ public class cHW01_Calculator_T151487 extends JFrame {
 	JLabel [][]lblpBin = new JLabel[4][8];
 	JPanel panPtoNum = new JPanel();
 	
+	
 	private void initComponent() {
 		this.setLayout(null);
 		// panStandard here
 		panStandards.setLayout(null);
 		Insets isMargin = new Insets(1, 1, 1, 1);
+		
 		ySta = 0;
 		for (int i = 0; i < 6; i++) {
 			xSta = 0;
@@ -152,7 +154,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			}
 			ySta = ySta + h + d;
 		}
-		
+		this.add(panStandards);
 		btnStandards[4][4].setSize(w, h + d + h);
 		btnStandards[5][0].setSize(w + d + w, h);
 		btnStandards[5][1].setLocation((w + d) * 2, ySta - h - d);
@@ -1324,18 +1326,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 					System.exit(0);
 				}
 				else if(mniT.equals(mniAboutJava)){
-					try {
-						String strContent = "";
-						Scanner reader = new Scanner(new File("./text/AboutJava.txt"));
-						while (reader.hasNextLine()){
-							strContent += reader.nextLine();
-						}
-						reader.close();
-						showAboutJava(strContent);
-					} catch (FileNotFoundException e1) {
-						JOptionPane.showMessageDialog(null, "ERROR! AboutJava.txt not found");
-					}
-					
+					showAboutJava();
 				}
 				else if(mniT.equals(mniCopy)){
 					strCopyPaste = txtInput.getText();
@@ -1356,9 +1347,9 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		
 	}
 	
-	private String strCopyPaste = "";
 	
-	private void showAboutJava(String strContent){
+	
+	private void showAboutJava(){
 		showAboutJava a = new showAboutJava();
 		a.setModal(true);
 		a.setVisible(true);
@@ -1446,9 +1437,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 			this.StageNum = 3;
 			setDisplayButtonPanelProgrammer(getStageConvertNum());
 			
-			//set empty strCopyPaste
-			strCopyPaste = "";
-			
 			//resize the frame
 			this.setSize(5 * w + 4 * d + 30 + xSci , 6 * h + 4 * d + y0+80 + yPBin);
 		}
@@ -1459,7 +1447,7 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		txtInput.setBounds(10, y1 + heightFml+10, this.getWidth() - 30, heightInput);
 		txtInput.setEditable(false);
 		txtInput.setFont(new Font("ROMAN_BASELINE", Font.PLAIN, 22));
-		txtInput.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtInput.setHorizontalAlignment(JTextField.RIGHT);
 		txtInput.setText("0");
 		blAppend = false;
 		
@@ -1532,7 +1520,6 @@ public class cHW01_Calculator_T151487 extends JFrame {
 		cHW01_Calculator_T151487 f = new cHW01_Calculator_T151487();
 		f.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		f.setVisible(true);
-		
 	}
 
 }
